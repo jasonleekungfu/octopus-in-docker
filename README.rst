@@ -13,7 +13,7 @@ Use cases: run octopus (for small calculations) conveniently in container, in pa
 Status 
 ------
 
-|stable| Debian Bullseye (11), Last octopus release (11.4)
+|stable| Debian Bullseye (11), Last octopus release (12.1)
 
 |develop| Debian Bullseye (11), Octopus develop branch
 
