@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
+  schedule:
+    # run once per month
+    - cron: "0 0 1 * *"
+
 
 jobs:
 
