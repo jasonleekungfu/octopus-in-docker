@@ -129,10 +129,10 @@ You are then the root user in the container. Octopus was compiled in ``/opt/octo
 
 
 
-.. |stable| image:: https://github.com/fangohr/octopus-in-spack/actions/workflows/stable.yml/badge.svg
-   :target: https://github.com/fangohr/octopus-in-spack/actions/workflows/stable.yml
+.. |stable| image:: https://github.com/fangohr/octopus-in-docker/actions/workflows/stable.yml/badge.svg
+   :target: https://github.com/fangohr/octopus-in-docker/actions/workflows/stable.yml
 
-.. |develop| image:: https://github.com/fangohr/octopus-in-spack/actions/workflows/develop.yml/badge.svg
-   :target: https://github.com/fangohr/octopus-in-spack/actions/workflows/debian-develop.yml
+.. |develop| image:: https://github.com/fangohr/octopus-in-docker/actions/workflows/develop.yml/badge.svg
+   :target: https://github.com/fangohr/octopus-in-docker/actions/workflows/debian-develop.yml
 
 
