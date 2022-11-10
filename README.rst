@@ -41,24 +41,24 @@ There are two steps required:
 Step 1: How obtain a Docker container image with Octopus
 --------------------------------------------------------
 
-We provide a `Dockerfile-debian <Dockerfile-debian>`__ to compile Octopus 12.1
-and `Dockerfile-debian-develop <Dockerfile-debian-develop>`__ to compile the ``develop`` branch of the Octopus
+We provide a `Dockerfile <Dockerfile>`__ to compile Octopus 12.1
+and `Dockerfile-develop <Dockerfile-develop>`__ to compile the ``develop`` branch of the Octopus
 repository in a container.
 
 The following examples are for the 12.1 release version. (To build a container
 for the latest Octopus version from the ``develop`` branch, replace
-``Dockerfile-debian`` with ``Dockerfile-debian-develop``.)
+``Dockerfile`` with ``Dockerfile-develop``.)
 
 Option A: Build the Docker image on your computer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 First clone this repository. Then run::
 
-  docker build -f Dockerfile-debian -t octimage .
+  docker build -f Dockerfile -t octimage .
 
 On Linux, you need to prefix all docker calls with ``sudo``::
 
-  sudo docker build -f Dockerfile-debian -t octimage .
+  sudo docker build -f Dockerfile -t octimage .
 
 This will take some time to complete.
 
