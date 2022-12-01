@@ -83,6 +83,10 @@ ENV OMP_NUM_THREADS=1
 RUN cd /opt/octopus-examples/he && mpirun -np 1 octopus
 RUN cd /opt/octopus-examples/he && mpirun -np 2 octopus
 
+# Add optional packages not needed by octopus (for visualization)
+RUN apt-get -y update && apt-get -y install gnuplot \
+    && rm -rf /var/lib/apt/lists/*
+    
 # offer directory for mounting container
 WORKDIR /io
 
