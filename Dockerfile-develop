@@ -1,6 +1,6 @@
 FROM debian:bullseye
 
-# install Octopus 12.1 on Debian
+# install Octopus develop version 
 
 # Convenience tools (up to emacs)
 # Libraries that octopus needs 
