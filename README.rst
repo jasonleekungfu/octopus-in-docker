@@ -128,7 +128,6 @@ If you want to work interactively *inside* the container, replace the name of th
 You are then the root user in the container. Octopus was compiled in ``/opt/octopus*``. There are also some trivial examples in ``/opt/octopus-examples``.
 
 
-
 .. |stable| image:: https://github.com/fangohr/octopus-in-docker/actions/workflows/stable.yml/badge.svg
    :target: https://github.com/fangohr/octopus-in-docker/actions/workflows/stable.yml
 
