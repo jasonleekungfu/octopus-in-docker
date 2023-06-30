@@ -40,6 +40,10 @@ RUN apt-get -y update && apt-get -y install wget time nano vim emacs \
     procps \
     && rm -rf /var/lib/apt/lists/*
 
+# Add optional packages not needed by octopus (for visualization)
+RUN apt-get -y update && apt-get -y install gnuplot \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /opt
 RUN git clone https://gitlab.com/octopus-code/octopus.git
 WORKDIR /opt/octopus
@@ -82,10 +86,6 @@ ENV OMP_NUM_THREADS=1
 # run one MPI-enabled version
 RUN cd /opt/octopus-examples/he && mpirun -np 1 octopus
 RUN cd /opt/octopus-examples/he && mpirun -np 2 octopus
-
-# Add optional packages not needed by octopus (for visualization)
-RUN apt-get -y update && apt-get -y install gnuplot \
-    && rm -rf /var/lib/apt/lists/*
     
 # offer directory for mounting container
 WORKDIR /io

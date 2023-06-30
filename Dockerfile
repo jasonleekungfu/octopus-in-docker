@@ -40,6 +40,10 @@ RUN apt-get -y update && apt-get -y install wget time nano vim emacs \
     procps \
     && rm -rf /var/lib/apt/lists/*
 
+# Add optional packages not needed by octopus (for visualization)
+RUN apt-get -y update && apt-get -y install gnuplot \
+  && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /opt
 RUN wget -O oct.tar.gz https://octopus-code.org/download/13.0/octopus-13.0.tar.gz && tar xfvz oct.tar.gz && rm oct.tar.gz
 
@@ -78,10 +82,6 @@ ENV OMP_NUM_THREADS=1
 # run one MPI-enabled version
 RUN cd /opt/octopus-examples/he && mpirun -np 1 octopus
 RUN cd /opt/octopus-examples/he && mpirun -np 2 octopus
-
-# Add optional packages not needed by octopus (for visualization)
-RUN apt-get -y update && apt-get -y install gnuplot \
-    && rm -rf /var/lib/apt/lists/*
 
 # offer directory for mounting container
 WORKDIR /io
