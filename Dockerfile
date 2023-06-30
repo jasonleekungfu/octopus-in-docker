@@ -1,6 +1,6 @@
 FROM debian:bullseye
 
-# install Octopus 12.2 on Debian
+# install Octopus 13.0 on Debian
 
 # Convenience tools (up to emacs)
 # Libraries that octopus needs 
@@ -40,10 +40,14 @@ RUN apt-get -y update && apt-get -y install wget time nano vim emacs \
     procps \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /opt
-RUN wget -O oct.tar.gz http://octopus-code.org/down.php?file=12.2/octopus-12.2.tar.gz && tar xfvz oct.tar.gz && rm oct.tar.gz
+# Add optional packages not needed by octopus (for visualization)
+RUN apt-get -y update && apt-get -y install gnuplot \
+  && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /opt/octopus-12.2
+WORKDIR /opt
+RUN wget -O oct.tar.gz https://octopus-code.org/download/13.0/octopus-13.0.tar.gz && tar xfvz oct.tar.gz && rm oct.tar.gz
+
+WORKDIR /opt/octopus-13.0
 RUN autoreconf -i
 RUN ./configure --enable-mpi --enable-openmp
 
@@ -78,10 +82,6 @@ ENV OMP_NUM_THREADS=1
 # run one MPI-enabled version
 RUN cd /opt/octopus-examples/he && mpirun -np 1 octopus
 RUN cd /opt/octopus-examples/he && mpirun -np 2 octopus
-
-# Add optional packages not needed by octopus (for visualization)
-RUN apt-get -y update && apt-get -y install gnuplot \
-    && rm -rf /var/lib/apt/lists/*
 
 # offer directory for mounting container
 WORKDIR /io
