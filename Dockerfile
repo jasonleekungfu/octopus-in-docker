@@ -31,6 +31,7 @@ RUN apt-get -y update && apt-get -y install wget time nano vim emacs \
     libopenmpi-dev \
     libscalapack-mpi-dev \
     libspfft-dev \
+    libsymspg-dev \
     libtool \
     libxc-dev \
     libyaml-dev \
