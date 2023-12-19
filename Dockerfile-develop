@@ -71,36 +71,35 @@ RUN dpkg -L libsymspg1
 
 RUN dpkg -L libsymspg-dev
 
-RUN echo "The command 'octopus --version' fails."
-#RUN octopus --version || 0
-CMD bash
+RUN echo "The command 'octopus --version' fails:"
 
-# RUN octopus --version > octopus-version
-# RUN octopus --version
-# 
-# # The next command returns an error code as some tests fail
-# # RUN make check-short
-# 
-# RUN mkdir -p /opt/octopus-examples
-# COPY examples /opt/octopus-examples
-# 
-# # Instead of tests, run two short examples
-# RUN cd /opt/octopus-examples/recipe && octopus
-# RUN cd /opt/octopus-examples/h-atom && octopus
-# RUN cd /opt/octopus-examples/he && octopus
-# 
-# # allow root execution of mpirun
-# ENV OMPI_ALLOW_RUN_AS_ROOT=1
-# ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
-# 
-# # set number of OpenMP threads to 1 by default
-# ENV OMP_NUM_THREADS=1
-# 
-# # run one MPI-enabled version
-# RUN cd /opt/octopus-examples/he && mpirun -np 1 octopus
-# RUN cd /opt/octopus-examples/he && mpirun -np 2 octopus
-#     
-# # offer directory for mounting container
-# WORKDIR /io
-# 
-# CMD bash -l
+RUN octopus --version > octopus-version
+RUN octopus --version
+
+
+# The next command returns an error code as some tests fail
+# RUN make check-short
+
+RUN mkdir -p /opt/octopus-examples
+COPY examples /opt/octopus-examples
+
+# Instead of tests, run two short examples
+RUN cd /opt/octopus-examples/recipe && octopus
+RUN cd /opt/octopus-examples/h-atom && octopus
+RUN cd /opt/octopus-examples/he && octopus
+
+# allow root execution of mpirun
+ENV OMPI_ALLOW_RUN_AS_ROOT=1
+ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
+
+# set number of OpenMP threads to 1 by default
+ENV OMP_NUM_THREADS=1
+
+# run one MPI-enabled version
+RUN cd /opt/octopus-examples/he && mpirun -np 1 octopus
+RUN cd /opt/octopus-examples/he && mpirun -np 2 octopus
+    
+# offer directory for mounting container
+WORKDIR /io
+
+CMD bash -l
