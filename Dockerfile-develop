@@ -31,7 +31,6 @@ RUN apt-get -y update && apt-get -y install wget time nano vim emacs \
     libopenmpi-dev \
     libscalapack-mpi-dev \
     libspfft-dev \
-    libsymspg-dev \
     libtool \
     libxc-dev \
     libyaml-dev \
@@ -63,19 +62,23 @@ RUN cat octopus-configlog-warnings
 # all in one line to make image smaller
 RUN make && make install && make clean && make distclean
 
-RUN echo "DEBUG from here----------------XXXX"
+RUN echo "DEBUG starts here XXXX ----------------"
+RUN echo "`octopus` cannot find libsym:"
 RUN ldd /usr/local/bin/octopus
 RUN ldd /usr/local/bin/octopus | grep libsym
 
-RUN dpkg -L libsymspg1
+RUN echo "The problem is solved by setting LD_LIBRARY_PATH - but that's probably not intended?"
+ENV LD_LIBRARY_PATH=/usr/local/lib
 
-RUN dpkg -L libsymspg-dev
+RUN echo $LD_LIBRARY_PATH
 
-RUN echo "The command 'octopus --version' fails:"
+RUN ldd /usr/local/bin/octopus
+RUN ldd /usr/local/bin/octopus | grep libsym
+
+RUN echo "DEBUG ends here XXXX ----------------"
 
 RUN octopus --version > octopus-version
 RUN octopus --version
-
 
 # The next command returns an error code as some tests fail
 # RUN make check-short
