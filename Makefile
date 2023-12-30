@@ -6,7 +6,8 @@ develop:
 
 .PHONY: stable develop dockerhub-update-multiarch
 
-# multiarch image for DockerHub
+# multiarch image for DockerHub. Docker buildkit allows cross-compilation of Docker images.
+# Tested by running the following on an M2 machine.
 dockerhub-update-multiarch:
 	@echo "If the container builds successfully, do this to push to dockerhub:"
 	@echo "Run 'docker login'"

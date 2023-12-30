@@ -7,7 +7,7 @@ Octopus in Docker container
 
 Support repository for building and executing the `OCTOPUS code <http://octopus-code.org>`__ package in a Docker container. (Other container formatst [singularity?] could be created from this.)
 
-Use cases: run octopus (for small calculations) conveniently in container, in particular on MacOS and Windows.
+Use cases: run octopus (for small calculations and tutorials) conveniently in container, in particular on MacOS and Windows.
 
 
 Status 
@@ -73,16 +73,6 @@ Instead of building it yourself, you can also pull an image from Dockerhub
 and then move on to using this image in the next section, where you replace
 ``octimage`` with ``fangohr/octopus:13.0``.
 
-[You should only use this "Option B" if your processor is x86 type. This is true
-for most CPUs - with the exception of the 'new' Apple M1 computers (which have
-the ARM64 architecture). If you have a M1 Mac, you could also download and use
-this docker image *but* it will execute very slowly (because the x86 hardware
-needs to be emulated). You are much better advised to follow "Option A" to build
-the image yourself (on your M1 Mac), and then it will execute fast.
-
-This advice and this documentation will change when we have managed to upload an
-ARM64 image to Dockerhub.]
-
 
 Step 2: Use the Docker image
 ----------------------------
@@ -126,6 +116,16 @@ If you want to work interactively *inside* the container, replace the name of th
   docker run --rm -ti -v $PWD:/io octimage bash
   
 You are then the root user in the container. Octopus was compiled in ``/opt/octopus*``. There are also some trivial examples in ``/opt/octopus-examples``.
+
+
+Information for developers: available architectures
+---------------------------------------------------
+
+The DockerHub images are available for x86 (AMD64) and M1/M2 (ARM64)
+architectures. Docker will download the correct one automatically. (You can use
+``docker inspect octimate | grep Arch`` to check the architecture
+for which you have the image ``octimage`` available on your machine,
+or use ``uname -m`` inside the container.)
 
 
 .. |stable| image:: https://github.com/fangohr/octopus-in-docker/actions/workflows/stable.yml/badge.svg
