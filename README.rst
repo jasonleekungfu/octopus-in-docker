@@ -11,8 +11,11 @@ Use cases: run octopus (for small calculations and tutorials) conveniently in
 container, in particular on MacOS and Windows.
 
 
-Quick start: Octopus in Docker container
-========================================
+Octopus in Docker container
+===========================
+
+Quick start
+-----------
 
 
 1. `Install docker <https://docs.docker.com/get-docker/>`__ on your machine.
@@ -34,7 +37,7 @@ Quick start: Octopus in Docker container
    The first time you run this, Docker needs to download the image
    ``fangohr/octopus`` from DockerHub. This could take a while (depending on your
    internet connection, the image size is about 850MB).
- 
+
    Meaning of the switches:
    
    - ``--rm`` remove docker container after it has been carried out (good practice to reduce disk usage).
@@ -46,19 +49,24 @@ Quick start: Octopus in Docker container
    - ``octopus`` is the name of the executable to run in the container. You can
      replace this with ``bash`` if you want to start octopus manually from inside
      the container.
-   
+
    This is tested and known to work on OSX and Windows. On Linux, there is a
    permissions issue if (numerical) user id on the host system and in the
    container deviate.
-   
-   If you want to use multiple MPI processes (for example 4), change the above line to::
-   
-       docker run --rm -ti -v $PWD:/io fangohr/octopus mpirun -np 4 octopus
- 
-   To check which version you have in the container, you can use::
+
+   To check which Octopus version you have in the container, you can use::
  
       docker run --rm -ti -v $PWD:/io fangohr/octopus octopus --version
 
+   If you want to use multiple MPI processes (for example 4), change the above line to::
+   
+       docker run --rm -ti -v $PWD:/io fangohr/octopus mpirun -np 4 octopus
+
+   If you want to use a different Octopus version you can check the `available
+   versions <https://hub.docker.com/r/fangohr/octopus/tags>`__, and then add the
+   version (for example `13.0`) to the Docker image in the command line::
+
+      docker run --rm -ti -v $PWD:/io fangohr/octopus:13.0 octopus --version
   
 Typical workflow with Octopus in container
 ------------------------------------------
@@ -81,8 +89,6 @@ If you want to work interactively *inside* the container, replace the name of th
 You are then the root user in the container. Octopus was compiled in ``/opt/octopus*``. There are also some trivial examples in ``/opt/octopus-examples``.
 
 What follows is more detailed documentation which is hopefully not needed for most people.
-
-
 
 
 
