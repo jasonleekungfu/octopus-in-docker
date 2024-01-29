@@ -3,7 +3,7 @@ FROM debian:bookworm
 # install Octopus 13.0 on Debian
 
 # Convenience tools (up to emacs)
-# Libraries that octopus needs 
+# Libraries that octopus needs
 # and optional dependencies (in alphabetical order)
 RUN apt-get -y update && apt-get -y install wget time nano vim emacs \
     autoconf \
@@ -48,7 +48,7 @@ RUN wget -O oct.tar.gz https://octopus-code.org/download/13.0/octopus-13.0.tar.g
 
 WORKDIR /opt/octopus-13.0
 RUN autoreconf -i
-RUN ./configure --enable-mpi --enable-openmp
+RUN ./configure --enable-mpi --enable-openmp --with-blacs="-lscalapack-openmpi"
 
 # Which optional dependencies are missing?
 RUN cat config.log | grep WARN > octopus-configlog-warnings
