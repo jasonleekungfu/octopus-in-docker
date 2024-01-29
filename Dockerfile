@@ -87,7 +87,7 @@ RUN cd /opt/octopus-examples/recipe && octopus > /tmp/octopus-recipe.out
 # test that the libraries are mentioned in the configuration options section of octopus output
 RUN grep "Configuration options" /tmp/octopus-recipe.out | grep "openmp"
 RUN grep "Configuration options" /tmp/octopus-recipe.out | grep "mpi"
-# test that the libraries are mentioned in theOptional libraries section of octopus output
+# test that the libraries are mentioned in the optional libraries section of octopus output
 RUN grep "Optional libraries" /tmp/octopus-recipe.out | grep "cgal"
 RUN grep "Optional libraries" /tmp/octopus-recipe.out | grep "scalapack"
 
