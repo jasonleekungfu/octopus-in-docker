@@ -4,12 +4,15 @@ stable:
 develop:
 	docker build --progress plain -f Dockerfile-develop -t octopus-develop .
 
-.PHONY: stable develop dockerhub-update-13.0
+.PHONY: stable develop dockerhub-update-multiarch
 
-dockerhub-update-13.0:
-	docker build -f Dockerfile -t fangohr/octopus:13.0 .
-	@echo "If the container has built successfully, do this to push to dockerhub:"
+# multiarch image for DockerHub. Docker buildkit allows cross-compilation of Docker images.
+# Tested by running the following on an M2 machine.
+dockerhub-update-multiarch:
+	@echo "If the container builds successfully, do this to push to dockerhub:"
 	@echo "Run 'docker login'"
-	@echo "Run 'docker push fangohr/octopus:13.0'"
-	@echo "Run 'docker tag fangohr/octopus:13.0 fangohr/octopus:latest'"
-	@echo "Run 'docker push fangohr/octopus:latest'"
+	@#if no builder exists yet:
+	docker buildx create --name container --driver=docker-container
+	docker buildx build --tag fangohr/octopus:13.0 --tag fangohr/octopus:latest --platform linux/arm64,linux/amd64 --builder container --push .
+
+
