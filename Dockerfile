@@ -3,7 +3,7 @@ FROM debian:bookworm
 # install Octopus 13.0 on Debian
 
 # Convenience tools (up to emacs)
-# Libraries that octopus needs 
+# Libraries that octopus needs
 # and optional dependencies (in alphabetical order)
 RUN apt-get -y update && apt-get -y install wget time nano vim emacs \
     autoconf \
@@ -48,7 +48,7 @@ RUN wget -O oct.tar.gz https://octopus-code.org/download/13.0/octopus-13.0.tar.g
 
 WORKDIR /opt/octopus-13.0
 RUN autoreconf -i
-RUN ./configure --enable-mpi --enable-openmp
+RUN ./configure --enable-mpi --enable-openmp --with-blacs="-lscalapack-openmpi"
 
 # Which optional dependencies are missing?
 RUN cat config.log | grep WARN > octopus-configlog-warnings
@@ -81,6 +81,16 @@ ENV OMP_NUM_THREADS=1
 # run one MPI-enabled version
 RUN cd /opt/octopus-examples/he && mpirun -np 1 octopus
 RUN cd /opt/octopus-examples/he && mpirun -np 2 octopus
+
+# test the libraries used by octopus
+RUN cd /opt/octopus-examples/recipe && octopus > /tmp/octopus-recipe.out
+# test that the libraries are mentioned in the configuration options section of octopus output
+RUN grep "Configuration options" /tmp/octopus-recipe.out | grep "openmp"
+RUN grep "Configuration options" /tmp/octopus-recipe.out | grep "mpi"
+# test that the libraries are mentioned in the optional libraries section of octopus output
+RUN grep "Optional libraries" /tmp/octopus-recipe.out | grep "cgal"
+RUN grep "Optional libraries" /tmp/octopus-recipe.out | grep "scalapack"
+
 
 # offer directory for mounting container
 WORKDIR /io
