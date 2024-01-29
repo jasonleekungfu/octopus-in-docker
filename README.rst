@@ -1,8 +1,3 @@
-|stable| Debian Bookworm (12), Last octopus release (13.0)
-
-|develop| Debian Bookworm (12), Octopus develop branch
-
-
 Support repository for building and executing the `OCTOPUS code
 <http://octopus-code.org>`__ package in a Docker container. (Other container
 formatst [singularity?] could be created from this.)
@@ -165,7 +160,7 @@ To use the Docker image::
 
   docker run --rm -ti -v $PWD:/io octimage octopus
 
-See Quick start documentation above for more details.
+See :ref:`Quick start` documentation above for more details.
 
 
 Information for developers: available architectures
@@ -184,4 +179,13 @@ or use ``uname -m`` inside the container.)
 .. |develop| image:: https://github.com/fangohr/octopus-in-docker/actions/workflows/develop.yml/badge.svg
    :target: https://github.com/fangohr/octopus-in-docker/actions/workflows/debian-develop.yml
 
+
+Status
+======
+
+Status of building the Docker images:
+
+|stable| Debian Bookworm (12), Last octopus release (13.0)
+
+|develop| Debian Bookworm (12), Octopus develop branch
 
