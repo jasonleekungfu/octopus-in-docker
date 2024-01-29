@@ -52,8 +52,7 @@ RUN git show > octopus-source-version
 RUN echo "octopus-source-clone-date: $date " >> octopus-source-version
 
 RUN autoreconf -i
-RUN ./configure --enable-mpi --enable-openmp
-
+RUN ./configure --enable-mpi --enable-openmp --with-blacs="-lscalapack-openmpi"
 # Which optional dependencies are missing?
 RUN cat config.log | grep WARN > octopus-configlog-warnings
 RUN cat octopus-configlog-warnings
