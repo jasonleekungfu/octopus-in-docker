@@ -58,7 +58,7 @@ RUN cat config.log | grep WARN > octopus-configlog-warnings
 RUN cat octopus-configlog-warnings
 
 # all in one line to make image smaller
-RUN make && make install && make clean && make distclean
+RUN make -j && make install && make clean && make distclean
 
 RUN octopus --version > octopus-version
 RUN octopus --version
