@@ -1,9 +1,8 @@
 Support repository for building and executing the `OCTOPUS code
-<http://octopus-code.org>`__ package in a Docker container. (Other container
-formatst [singularity?] could be created from this.)
+<http://octopus-code.org>`__ package in a Docker container. 
 
-Use cases: run octopus (for small calculations and tutorials) conveniently in
-container, in particular on MacOS and Windows.
+Use case: run Octopus (for small calculations and tutorials) conveniently in
+container, in particular on MacOS and Windows. 
 
 
 Octopus in Docker container
@@ -160,7 +159,7 @@ To use the Docker image::
 
   docker run --rm -ti -v $PWD:/io octimage octopus
 
-See :ref:`Quick start` documentation above for more details.
+See Quick start section above for more details.
 
 
 Information for developers: available architectures
