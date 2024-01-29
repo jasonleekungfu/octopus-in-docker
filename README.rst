@@ -123,8 +123,8 @@ Information for developers: available architectures
 
 The DockerHub images are available for x86 (AMD64) and M1/M2 (ARM64)
 architectures. Docker will download the correct one automatically. (You can use
-``docker inspect octimate | grep Arch`` to check the architecture
-for which you have the image ``octimage`` available on your machine,
+``docker inspect fangohr/octopus | grep Arch`` to check the architecture
+for which you have the image available on your machine,
 or use ``uname -m`` inside the container.)
 
 
