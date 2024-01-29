@@ -1,8 +1,8 @@
-Support repository for building and executing the `OCTOPUS code
+Repository for building and executing the `OCTOPUS code
 <http://octopus-code.org>`__ package in a Docker container. 
 
 Use case: run Octopus (for small calculations and tutorials) conveniently in
-container, in particular on MacOS and Windows. 
+container, in particular on MacOS and Windows where compilation of Octopus may be non trivial.
 
 
 Octopus in Docker container
