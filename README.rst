@@ -3,15 +3,6 @@
 |develop| Debian Bookworm (12), Octopus develop branch
 
 
-
-
-Octopus in Docker container
-===========================
-
-.. sectnum::
-
-.. contents:: 
-
 Support repository for building and executing the `OCTOPUS code
 <http://octopus-code.org>`__ package in a Docker container. (Other container
 formatst [singularity?] could be created from this.)
@@ -20,8 +11,8 @@ Use cases: run octopus (for small calculations and tutorials) conveniently in
 container, in particular on MacOS and Windows.
 
 
-Quick start: want to run Octopus in container for a tutorial / workshop / example?
-==================================================================================
+Quick start: Octopus in Docker container
+========================================
 
 
 1. `Install docker <https://docs.docker.com/get-docker/>`__ on your machine.
@@ -40,33 +31,33 @@ Quick start: want to run Octopus in container for a tutorial / workshop / exampl
 
     docker run --rm -ti -v $PWD:/io fangohr/octopus octopus
   
-  The first time you run this, Docker needs to download the image
-  ``fangohr/octopus`` from DockerHub. This could take a while (depending on your
-  internet connection, the image size is about 850MB).
-
-  Meaning of the switches:
-  
-  - ``--rm`` remove docker container after it has been carried out (good practice to reduce disk usage).
-  - ``-ti`` allow to make the Terminal session Interactive
-  - ``-v $PWD:/io``: take the current working directory (``$PWD``) and mount it in
-    the container in the location ``/io``. This is also the default directory of
-    the container.
-  - ``fangohr/octopus`` is the name of the container image. The next 
-  - ``octopus`` is the name of the executable to run in the container. You can
-    replace this with ``bash`` if you want to start octopus manually from inside
-    the container.
-  
-  This is tested and known to work on OSX and Windows. On Linux, there is a
-  permissions issue if (numerical) user id on the host system and in the
-  container deviate.
-  
-  If you want to use multiple MPI processes (for example 4), change the above line to::
-  
-      docker run --rm -ti -v $PWD:/io fangohr/octopus mpirun -np 4 octopus
-
-  To check which version you have in the container, you can use::
-
-     docker run --rm -ti -v $PWD:/io fangohr/octopus octopus --version
+   The first time you run this, Docker needs to download the image
+   ``fangohr/octopus`` from DockerHub. This could take a while (depending on your
+   internet connection, the image size is about 850MB).
+ 
+   Meaning of the switches:
+   
+   - ``--rm`` remove docker container after it has been carried out (good practice to reduce disk usage).
+   - ``-ti`` allow to make the Terminal session Interactive
+   - ``-v $PWD:/io``: take the current working directory (``$PWD``) and mount it in
+     the container in the location ``/io``. This is also the default directory of
+     the container.
+   - ``fangohr/octopus`` is the name of the container image. The next 
+   - ``octopus`` is the name of the executable to run in the container. You can
+     replace this with ``bash`` if you want to start octopus manually from inside
+     the container.
+   
+   This is tested and known to work on OSX and Windows. On Linux, there is a
+   permissions issue if (numerical) user id on the host system and in the
+   container deviate.
+   
+   If you want to use multiple MPI processes (for example 4), change the above line to::
+   
+       docker run --rm -ti -v $PWD:/io fangohr/octopus mpirun -np 4 octopus
+ 
+   To check which version you have in the container, you can use::
+ 
+      docker run --rm -ti -v $PWD:/io fangohr/octopus octopus --version
 
   
 Typical workflow with Octopus in container
@@ -92,8 +83,16 @@ You are then the root user in the container. Octopus was compiled in ``/opt/octo
 What follows is more detailed documentation which is hopefully not needed for most people.
 
 
+
+
+
 Documentation for advanced users and developers
 ===============================================
+
+.. sectnum::
+
+.. contents:: 
+
 
 Introduction
 ------------
