@@ -93,7 +93,7 @@ RUN grep "Configuration options" /tmp/octopus-recipe.out | grep "mpi"
 # test that the libraries are mentioned in theOptional libraries section of octopus output
 RUN grep "Optional libraries" /tmp/octopus-recipe.out | grep "cgal"
 RUN grep "Optional libraries" /tmp/octopus-recipe.out | grep "scalapack"
-RUN grep "Optional libraries" /tmp/octopus-recipe.out | grep "elpa"
+RUN grep "Optional libraries" /tmp/octopus-recipe.out | grep "ELPA"
 
 # offer directory for mounting container
 WORKDIR /io

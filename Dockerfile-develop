@@ -63,7 +63,7 @@ RUN cat config.log | grep WARN > octopus-configlog-warnings
 RUN cat octopus-configlog-warnings
 
 # all in one line to make image smaller
-RUN make && make install && make clean && make distclean
+RUN make -j && make install && make clean && make distclean
 
 RUN echo "Section Issue 9 starts here. --------------"
 RUN echo "Issue 9: https://github.com/fangohr/octopus-in-docker/issues/9"
@@ -110,7 +110,7 @@ RUN grep "Configuration options" /tmp/octopus-recipe.out | grep "mpi"
 # test that the libraries are mentioned in theOptional libraries section of octopus output
 RUN grep "Optional libraries" /tmp/octopus-recipe.out | grep "cgal"
 RUN grep "Optional libraries" /tmp/octopus-recipe.out | grep "scalapack"
-RUN grep "Optional libraries" /tmp/octopus-recipe.out | grep "elpa"
+RUN grep "Optional libraries" /tmp/octopus-recipe.out | grep "ELPA"
 
 # offer directory for mounting container
 WORKDIR /io
