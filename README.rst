@@ -1,3 +1,10 @@
+|stable| Debian Bookworm (12), Last octopus release (13.0)
+
+|develop| Debian Bookworm (12), Octopus develop branch
+
+
+
+
 Octopus in Docker container
 ===========================
 
@@ -10,13 +17,80 @@ Support repository for building and executing the `OCTOPUS code <http://octopus-
 Use cases: run octopus (for small calculations and tutorials) conveniently in container, in particular on MacOS and Windows.
 
 
-Status 
-------
+Quick start: want to run Octopus in container for a tutorial / workshop / example?
+##################################################################################
 
-|stable| Debian Bookworm (12), Last octopus release (13.0)
 
-|develop| Debian Bookworm (12), Octopus develop branch
+1. `Install docker <https://docs.docker.com/get-docker/>`__ on your machine.
 
+   Check to confirm: run ``docker --version``. Expected output is something like this::
+
+     ```console
+     $ docker --version
+     Docker version 20.10.12, build e91ed57
+     ```
+
+2. Change into the directory that contains your ``inp`` file.
+
+
+3. Then run::
+
+    docker run --rm -ti -v $PWD:/io fangohr/octopus octopus
+  
+  The first time you run this, Docker needs to download the image
+  ``fangohr/octopus`` from DockerHub. This could take a while (depending on your
+  internet connection, the image size is about 850MB).
+
+  Meaning of the switches:
+  
+  - ``--rm`` remove docker container after it has been carried out (good practice to reduce disk usage).
+  - ``-ti`` allow to make the Terminal session Interactive
+  - ``-v $PWD:/io``: take the current working directory (``$PWD``) and mount it in
+    the container in the location ``/io``. This is also the default directory of
+    the container.
+  - ``fangohr/octopus`` is the name of the container image. The next 
+  - ``octopus`` is the name of the executable to run in the container. You can
+    replace this with ``bash`` if you want to start octopus manually from inside
+    the container.
+  
+  This is tested and known to work on OSX and Windows. On Linux, there is a
+  permissions issue if (numerical) user id on the host system and in the
+  container deviate.
+  
+  If you want to use multiple MPI processes (for example 4), change the above line to::
+  
+      docker run --rm -ti -v $PWD:/io fangohr/octopus mpirun -np 4 octopus
+
+  To check which version you have in the container, you can use::
+
+     docker run --rm -ti -v $PWD:/io fangohr/octopus octopus --version
+
+  
+Typical workflow with Octopus in container
+------------------------------------------
+
+- edit your ``inp`` file and save it  (on the host computer)
+
+- call Octopus (in the container) by running ::
+
+      docker run --rm -ti -v $PWD:/io fangohr/octopus octopus
+  
+  Only the ``octopus`` command will be carried out in the
+  container. Any output files are written to the current directory on the host.
+
+- carry out data analysis on the host
+
+If you want to work interactively *inside* the container, replace the name of the executable with ``bash``::
+
+  docker run --rm -ti -v $PWD:/io fangohr/octopus bash
+  
+You are then the root user in the container. Octopus was compiled in ``/opt/octopus*``. There are also some trivial examples in ``/opt/octopus-examples``.
+
+What follows is more detailed documentation which is hopefully not needed for most people.
+
+
+Documentation for advanced users and developers
+###############################################
 
 Introduction
 ------------
@@ -33,7 +107,7 @@ inside the container.
 
 There are two steps required:
 
-- Step 1: build the container image (only once) or download it (only once)
+- Step 1: build the container image (only once) or download it (only once).
 
 - Step 2: use the container to execute Octopus inside the container
 
@@ -41,9 +115,9 @@ There are two steps required:
 Step 1: How obtain a Docker container image with Octopus
 --------------------------------------------------------
 
-We provide a `Dockerfile <Dockerfile>`__ to compile Octopus 13.0
-and `Dockerfile-develop <Dockerfile-develop>`__ to compile the ``develop`` branch of the Octopus
-repository in a container.
+In this repository we provide a `Dockerfile <Dockerfile>`__ to compile Octopus
+13.0 and `Dockerfile-develop <Dockerfile-develop>`__ to compile the ``develop``
+branch of the Octopus repository in a container.
 
 The following examples are for the 13.0 release version. (To build a container
 for the latest Octopus version from the ``develop`` branch, replace
@@ -73,6 +147,10 @@ Instead of building it yourself, you can also pull an image from Dockerhub
 and then move on to using this image in the next section, where you replace
 ``octimage`` with ``fangohr/octopus:13.0``.
 
+If the ``docker pull`` command is not run, then docker will execute it
+automatically when a ``docker run`` command needs a particular image (such as
+``fangohr/octopus:13.0``).
+
 
 Step 2: Use the Docker image
 ----------------------------
@@ -80,48 +158,14 @@ Step 2: Use the Docker image
 To use the Docker image::
 
   docker run --rm -ti -v $PWD:/io octimage octopus
-  
-Meaning of the switches:
 
-- ``--rm`` remove docker container after it has been carried out (good practice to reduce disk usage).
-- ``-ti`` allow to make the Terminal session Interactive
-- ``-v $PWD:/io``: take the current working directory (``$PWD``) and mount it in
-  the container in the location ``/io``. This is also the default directory of
-  the container.
-- ``octimage`` is the name of the container image. The next 
-- ``octopus`` is the name of the executable to run in the container. 
-
-This is tested and known to work on OSX. On Linux, there is a permissions issue
-if (numerical) user id on the host system and in the container deviate.
-
-If you want to use multiple MPI processes (for example 4), change the above line to::
-
-    docker run --rm -ti -v $PWD:/io octimage mpirun -np 4 octopus
-
-
-Typical workflow with Octopus in container
-------------------------------------------
-
-- edit your ``inp`` file and save it  (on the host computer)
-- call Octopus (in the container) by running ::
-
-      docker run --rm -ti -v $PWD:/io octimage octopus
-  
-  Only the ``octopus`` command will be carried out in the
-  container. Any output files are written to the current directory on the host.
-- carry out data analysis on the host
-
-If you want to work interactively *inside* the container, replace the name of the executable with ``bash``::
-
-  docker run --rm -ti -v $PWD:/io octimage bash
-  
-You are then the root user in the container. Octopus was compiled in ``/opt/octopus*``. There are also some trivial examples in ``/opt/octopus-examples``.
+See Quick start documentation above for more details.
 
 
 Information for developers: available architectures
 ---------------------------------------------------
 
-The DockerHub images are available for x86 (AMD64) and M1/M2 (ARM64)
+The DockerHub images are available for x86 (AMD64) and M1/M2/M3 (ARM64)
 architectures. Docker will download the correct one automatically. (You can use
 ``docker inspect fangohr/octopus | grep Arch`` to check the architecture
 for which you have the image available on your machine,
