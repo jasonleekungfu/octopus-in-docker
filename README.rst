@@ -12,13 +12,16 @@ Octopus in Docker container
 
 .. contents:: 
 
-Support repository for building and executing the `OCTOPUS code <http://octopus-code.org>`__ package in a Docker container. (Other container formatst [singularity?] could be created from this.)
+Support repository for building and executing the `OCTOPUS code
+<http://octopus-code.org>`__ package in a Docker container. (Other container
+formatst [singularity?] could be created from this.)
 
-Use cases: run octopus (for small calculations and tutorials) conveniently in container, in particular on MacOS and Windows.
+Use cases: run octopus (for small calculations and tutorials) conveniently in
+container, in particular on MacOS and Windows.
 
 
 Quick start: want to run Octopus in container for a tutorial / workshop / example?
-##################################################################################
+==================================================================================
 
 
 1. `Install docker <https://docs.docker.com/get-docker/>`__ on your machine.
@@ -90,7 +93,7 @@ What follows is more detailed documentation which is hopefully not needed for mo
 
 
 Documentation for advanced users and developers
-###############################################
+===============================================
 
 Introduction
 ------------
