@@ -22,10 +22,8 @@ Quick start
 
    Check to confirm: run ``docker --version``. Expected output is something like this::
 
-     ```console
      $ docker --version
      Docker version 20.10.12, build e91ed57
-     ```
 
 2. Change into the directory that contains your ``inp`` file.
 
