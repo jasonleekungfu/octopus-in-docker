@@ -34,9 +34,9 @@ Quick start
    
    - ``--rm`` remove docker container after it has been carried out (good practice to reduce disk usage).
    - ``-ti`` allow to make the Terminal session Interactive
-   - ``-v $PWD:/io``: take the current working directory (``$PWD``) and mount it in
-     the container in the location ``/io``. This is also the default directory of
-     the container.
+   - ``-v $PWD:/io``: take the current working directory (``$PWD``) and mount it
+     in the container in the location ``/io``. This is also the default working
+     directory of the container.
    - ``fangohr/octopus`` is the name of the container image. The next 
    - ``octopus`` is the name of the executable to run in the container. You can
      replace this with ``bash`` if you want to start octopus manually from inside
