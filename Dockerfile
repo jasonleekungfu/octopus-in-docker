@@ -48,14 +48,17 @@ RUN wget -O oct.tar.gz https://octopus-code.org/download/13.0/octopus-13.0.tar.g
 
 WORKDIR /opt/octopus-13.0
 RUN autoreconf -i
-RUN ./configure --enable-mpi --enable-openmp --with-blacs="-lscalapack-openmpi"
+# We need to set FCFLAGS_ELPA as the octopus m4 has a bug
+# see https://gitlab.com/octopus-code/octopus/-/issues/900
+RUN export FCFLAGS_ELPA="-I/usr/include -I/usr/include/elpa/modules" && \
+    ./configure --enable-mpi --enable-openmp --with-blacs="-lscalapack-openmpi"
 
 # Which optional dependencies are missing?
 RUN cat config.log | grep WARN > octopus-configlog-warnings
 RUN cat octopus-configlog-warnings
 
 # all in one line to make image smaller
-RUN make && make install && make clean && make distclean
+RUN make -j && make install && make clean && make distclean
 
 RUN octopus --version > octopus-version
 RUN octopus --version
@@ -90,7 +93,7 @@ RUN grep "Configuration options" /tmp/octopus-recipe.out | grep "mpi"
 # test that the libraries are mentioned in the optional libraries section of octopus output
 RUN grep "Optional libraries" /tmp/octopus-recipe.out | grep "cgal"
 RUN grep "Optional libraries" /tmp/octopus-recipe.out | grep "scalapack"
-
+RUN grep "Optional libraries" /tmp/octopus-recipe.out | grep "ELPA"
 
 # offer directory for mounting container
 WORKDIR /io
