@@ -78,7 +78,7 @@ If you want to work interactively *inside* the container, replace the name of th
 
   docker run --rm -ti -v $PWD:/io fangohr/octopus bash
   
-You are then the root user in the container. Octopus was compiled in ``/opt/octopus*``. There are also some trivial examples in ``/opt/octopus-examples``.
+You are then the root user in the container. Octopus was compiled in ``/opt/octopus*``. There are also some trivial example input files in ``/opt/octopus-examples``.
 
 What follows is more detailed documentation which is hopefully not needed for most people.
 
