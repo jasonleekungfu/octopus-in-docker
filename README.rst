@@ -184,7 +184,7 @@ Status
 
 Status of building the Docker images:
 
-|stable| Debian Bookworm (12), Last octopus release (13.0)
+|stable| Debian Bookworm (12), Latest Octopus release (13.0)
 
 |develop| Debian Bookworm (12), Octopus develop branch
 
