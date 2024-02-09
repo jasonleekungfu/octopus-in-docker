@@ -33,7 +33,7 @@ Quick start
    Meaning of the switches:
    
    - ``--rm`` remove docker container after it has been carried out (good practice to reduce disk usage).
-   - ``-ti`` start an ``i``nteractive  pseudo-``t``ty shell in the container 
+   - ``-ti`` start an Interactive  pseudo-Tty shell in the container 
    - ``-v $PWD:/io``: take the current working directory (``$PWD``) and mount it
      in the container in the location ``/io``. This is also the default working
      directory of the container.
