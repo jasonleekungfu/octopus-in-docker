@@ -80,7 +80,7 @@ RUN echo "Section Issue 9 ends here. ----------------"
 RUN echo "Section Issue 9 starts here. --------------"
 RUN echo "Issue 9: https://github.com/fangohr/octopus-in-docker/issues/9"
 # DEBUG output
-RUN ldd /usr/local/bin/octopus | grep libsym
+RUN if [ "${VERSION_OCTOPUS}" = "develop" ]; then ldd /usr/local/bin/octopus | grep libsym; fi
 RUN echo $LD_LIBRARY_PATH
 # Setting LD_LIBRARY_PATH as follows works around the octopus bug described in
 # https://github.com/fangohr/octopus-in-docker/issues/9 and also referenced in
