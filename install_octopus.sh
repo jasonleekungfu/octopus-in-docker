@@ -4,8 +4,8 @@
 # $ ./install_octopus.sh 13.0 /opt/octopus /home/user/octopus-bin
 # $ ./install_octopus.sh develop /opt/octopus
 
-# exit on error
-set -e
+# exit on error and print each command
+set -xe
 
 # Check if the version number and location is provided
 if [ -z "$1" ]
