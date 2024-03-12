@@ -1,6 +1,9 @@
 FROM debian:bookworm
 
-# install Octopus 13.0 on Debian
+# install Octopus (13.0 or develop) on Debian
+
+# the version to install (13.0 or develop) is set by buildarg VERSION_OCTOPUS
+ARG VERSION_OCTOPUS=13.0
 
 # Convenience tools (up to emacs)
 # Libraries that octopus needs
@@ -44,9 +47,10 @@ RUN apt-get -y update && apt-get -y install gnuplot \
   && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt
-RUN wget -O oct.tar.gz https://octopus-code.org/download/13.0/octopus-13.0.tar.gz && tar xfvz oct.tar.gz && rm oct.tar.gz
+COPY prepare_download.sh /opt
+RUN bash /opt/prepare_download.sh $VERSION_OCTOPUS /opt/octopus
 
-WORKDIR /opt/octopus-13.0
+WORKDIR /opt/octopus
 RUN autoreconf -i
 # We need to set FCFLAGS_ELPA as the octopus m4 has a bug
 # see https://gitlab.com/octopus-code/octopus/-/issues/900
