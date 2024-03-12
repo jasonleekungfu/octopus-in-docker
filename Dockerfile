@@ -1,64 +1,24 @@
 FROM debian:bookworm
 
-# install Octopus 13.0 on Debian
+# install Octopus (latest stable or develop) on Debian
 
-# Convenience tools (up to emacs)
-# Libraries that octopus needs
-# and optional dependencies (in alphabetical order)
-RUN apt-get -y update && apt-get -y install wget time nano vim emacs \
-    autoconf \
-    automake \
-    build-essential \
-    g++ \
-    gcc \
-    gfortran \
-    git \
-    libatlas-base-dev \
-    libblas-dev \
-    libboost-dev \
-    libcgal-dev \
-    libelpa-dev \
-    libetsf-io-dev \
-    libfftw3-dev \
-    libgmp-dev \
-    libgsl-dev \
-    liblapack-dev \
-    liblapack-dev \
-    libmpfr-dev \
-    libnetcdff-dev \
-    libnlopt-dev \
-    libopenmpi-dev \
-    libscalapack-mpi-dev \
-    libspfft-dev \
-    libtool \
-    libxc-dev \
-    libyaml-dev \
-    openscad \
-    openctm-tools \
-    pkg-config \
-    procps \
-    && rm -rf /var/lib/apt/lists/*
+# the version to install (latest stable or develop) is set by buildarg VERSION_OCTOPUS
+ARG VERSION_OCTOPUS=develop
 
-# Add optional packages not needed by octopus (for visualization)
-RUN apt-get -y update && apt-get -y install gnuplot \
-  && rm -rf /var/lib/apt/lists/*
 
+
+# Install octopus dependencies and compile octopus.
 WORKDIR /opt
-RUN wget -O oct.tar.gz https://octopus-code.org/download/13.0/octopus-13.0.tar.gz && tar xfvz oct.tar.gz && rm oct.tar.gz
+COPY *.sh /opt
+RUN bash /opt/install_dependencies.sh
+#   bash /opt/install_octopus.sh $VERSION_OCTOPUS $OCTOPUS_SOURCE_DIR $OCTOPUS_INSTALL_DIR
+RUN bash /opt/install_octopus.sh $VERSION_OCTOPUS /opt/octopus
 
-WORKDIR /opt/octopus-13.0
-RUN autoreconf -i
-# We need to set FCFLAGS_ELPA as the octopus m4 has a bug
-# see https://gitlab.com/octopus-code/octopus/-/issues/900
-RUN export FCFLAGS_ELPA="-I/usr/include -I/usr/include/elpa/modules" && \
-    ./configure --enable-mpi --enable-openmp --with-blacs="-lscalapack-openmpi"
+# on octopus>13 libsym (external-lib) is dynamically linked and hence needs LD_LIBRARY_PATH set
+# see https://github.com/fangohr/octopus-in-docker/issues/9
+ENV LD_LIBRARY_PATH="/usr/local/lib"
 
-# Which optional dependencies are missing?
-RUN cat config.log | grep WARN > octopus-configlog-warnings
-RUN cat octopus-configlog-warnings
-
-# all in one line to make image smaller
-RUN make -j && make install && make clean && make distclean
+WORKDIR /opt/octopus
 
 RUN octopus --version > octopus-version
 RUN octopus --version

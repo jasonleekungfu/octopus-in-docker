@@ -1,8 +1,14 @@
+# This Makefile is used to build the Docker image for Octopus.
+# EXAMPLE: make stable
+# EXAMPLE: make develop
+# EXAMPLE: make stable VERSION_OCTOPUS=12.0
+VERSION_OCTOPUS?=13.0
+
 stable:
-	docker build -f Dockerfile -t octopus .
+	docker build -f Dockerfile --build-arg VERSION_OCTOPUS=${VERSION_OCTOPUS} -t octopus .
 
 develop:
-	docker build --progress plain -f Dockerfile-develop -t octopus-develop .
+	docker build -f Dockerfile --build-arg VERSION_OCTOPUS=develop -t octopus-develop .
 
 .PHONY: stable develop dockerhub-update-multiarch
 
@@ -13,6 +19,6 @@ dockerhub-update-multiarch:
 	@echo "Run 'docker login'"
 	@#if no builder exists yet:
 	docker buildx create --name container --driver=docker-container
-	docker buildx build --tag fangohr/octopus:13.0 --tag fangohr/octopus:latest --platform linux/arm64,linux/amd64 --builder container --push .
+	docker buildx build --tag fangohr/octopus:${VERSION_OCTOPUS} --tag fangohr/octopus:latest --platform linux/arm64,linux/amd64 --builder container --push .
 
 
