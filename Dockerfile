@@ -13,6 +13,10 @@ COPY install_octopus.sh /opt
 #   bash /opt/install_octopus.sh $VERSION_OCTOPUS $OCTOPUS_SOURCE_DIR $OCTOPUS_INSTALL_DIR
 RUN bash /opt/install_octopus.sh $VERSION_OCTOPUS /opt/octopus
 
+# on octopus>13 libsym (external-lib) is dynamically linked and hence needs LD_LIBRARY_PATH set
+# see https://github.com/fangohr/octopus-in-docker/issues/9
+ENV LD_LIBRARY_PATH="/usr/local/lib"
+
 WORKDIR /opt/octopus
 
 RUN octopus --version > octopus-version
