@@ -9,7 +9,8 @@ ARG VERSION_OCTOPUS=develop
 
 # Install octopus dependencies and compile octopus.
 WORKDIR /opt
-COPY install_octopus.sh /opt
+COPY *.sh /opt
+RUN bash /opt/install_dependencies.sh
 #   bash /opt/install_octopus.sh $VERSION_OCTOPUS $OCTOPUS_SOURCE_DIR $OCTOPUS_INSTALL_DIR
 RUN bash /opt/install_octopus.sh $VERSION_OCTOPUS /opt/octopus
 
