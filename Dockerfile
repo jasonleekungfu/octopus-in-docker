@@ -1,9 +1,9 @@
 FROM debian:bookworm
 
-# install Octopus (13.0 or develop) on Debian
+# install Octopus (latest stable or develop) on Debian
 
-# the version to install (13.0 or develop) is set by buildarg VERSION_OCTOPUS
-ARG VERSION_OCTOPUS=13.0
+# the version to install (latest stable or develop) is set by buildarg VERSION_OCTOPUS
+ARG VERSION_OCTOPUS=develop
 
 # Convenience tools (up to emacs)
 # Libraries that octopus needs
