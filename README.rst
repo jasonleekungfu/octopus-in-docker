@@ -1,8 +1,12 @@
-Repository for building and executing the `OCTOPUS code
-<http://octopus-code.org>`__ package in a Docker container. 
+Repository for running (and if desired building) the
+`OCTOPUS code <http://octopus-code.org>`__ package in a Docker container.
 
 Use case: run Octopus (for small calculations and tutorials) conveniently in a
 container, in particular on MacOS and Windows where compilation of Octopus may be non trivial.
+
+Octopus versions 13.0 and more recent are
+`available as Docker images <https://hub.docker.com/r/fangohr/octopus/tags>`__ for Intel (AMD64)
+and M1/M2/M3 (ARM64) processors.
 
 
 Octopus in Docker container
@@ -28,7 +32,9 @@ Quick start
   
    The first time you run this, Docker needs to download the image
    ``fangohr/octopus`` from DockerHub. This could take a while (depending on your
-   internet connection, the image size is about 850MB).
+   internet connection, the image size is about 900MB). If we do not specify a version,
+   docker will download the
+   `image that is tagged as "latest" <https://hub.docker.com/r/fangohr/octopus/tags?page=1&name=latest>`__
 
    Meaning of the switches:
    
@@ -42,7 +48,7 @@ Quick start
      replace this with ``bash`` if you want to start octopus manually from inside
      the container.
 
-   This is tested and known to work on OSX and Windows. On Linux, there is a
+   This is tested and known to work on macOS and Windows. On Linux, there is a
    permissions issue if (numerical) user id on the host system and in the
    container deviate.
 
@@ -96,7 +102,7 @@ Introduction
 ------------
 
 If you have difficulties compiling Octopus, it might be useful to be able to run
-it in a container (for example on Windows or MacOS).
+it in a container (for example on Windows or macOS).
 
 The container provides a mini (Linux) Operating system, in which we can compile
 Octopus using a recipe (this is the Dockerfile, see below).
@@ -107,53 +113,34 @@ inside the container.
 
 There are two steps required:
 
-- Step 1: build the container image (only once) or download it (only once).
+- Step 1: build the Docker image (only once) or download it (only once). For
+  downloading a pre-compiled Docker image and using that, please see
+  instructions above "Quick Start".
 
-- Step 2: use the container to execute Octopus inside the container
+- Step 2: use Docker to execute Octopus inside the Docker container.
 
-
-Step 1: How obtain a Docker container image with Octopus
---------------------------------------------------------
+Build the Docker image on your computer
+---------------------------------------
 
 In this repository we provide a `Dockerfile <Dockerfile>`__ to compile Octopus
-13.0 and `Dockerfile-develop <Dockerfile-develop>`__ to compile the ``develop``
-branch of the Octopus repository in a container.
+inside a Docker container.
 
-The following examples are for the 13.0 release version. (To build a container
-for the latest Octopus version from the ``develop`` branch, replace
-``Dockerfile`` with ``Dockerfile-develop``.)
+To do this, first clone this repository. Then run::
 
-Option A: Build the Docker image on your computer
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  docker build -f Dockerfile --build-arg VERSION_OCTOPUS=14.0 -t octimage
 
-First clone this repository. Then run::
+to build Octopus version ``14.0`` in the container and create the Docker image with name ``octimage``.
 
-  docker build -f Dockerfile -t octimage .
+To use the current development version of Octopus (from the `gitlab repository
+<https://gitlab.com/octopus-code/octopus>`__), use ``VERSION_OCTOPUS=develop``
+instead of ``VERSION_OCTOPUS=14.0``. Omitting the ``VERSION_OCTOPUS`` argument
+will by default pick the ``develop`` version.
 
-On Linux, you need to prefix all docker calls with ``sudo``::
+This will take some time to complete. (On Linux, you may need to prefix all
+docker calls with ``sudo``.)
 
-  sudo docker build -f Dockerfile -t octimage .
-
-This will take some time to complete.
-
-Option B: Download Docker image from Dockerhub
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Instead of building it yourself, you can also pull an image from Dockerhub
-(`available versions <https://hub.docker.com/r/fangohr/octopus/tags>`__) using::
-
-  docker pull fangohr/octopus:13.0
-
-and then move on to using this image in the next section, where you replace
-``octimage`` with ``fangohr/octopus:13.0``.
-
-If the ``docker pull`` command is not run, then docker will execute it
-automatically when a ``docker run`` command needs a particular image (such as
-``fangohr/octopus:13.0``).
-
-
-Step 2: Use the Docker image
-----------------------------
+Use the Docker image
+--------------------
 
 To use the Docker image::
 
@@ -184,7 +171,7 @@ Status
 
 Status of building the Docker images:
 
-|stable| Debian Bookworm (12), Latest Octopus release (13.0)
+|stable| Debian Bookworm (12), Latest Octopus release (14.0)
 
 |develop| Debian Bookworm (12), Octopus develop branch
 

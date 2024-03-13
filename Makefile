@@ -2,7 +2,7 @@
 # EXAMPLE: make stable
 # EXAMPLE: make develop
 # EXAMPLE: make stable VERSION_OCTOPUS=12.0
-VERSION_OCTOPUS?=13.0
+VERSION_OCTOPUS?=14.0
 
 stable:
 	docker build -f Dockerfile --build-arg VERSION_OCTOPUS=${VERSION_OCTOPUS} -t octopus .
@@ -19,6 +19,12 @@ dockerhub-update-multiarch:
 	@echo "Run 'docker login'"
 	@#if no builder exists yet:
 	docker buildx create --name container --driver=docker-container
-	docker buildx build --tag fangohr/octopus:${VERSION_OCTOPUS} --tag fangohr/octopus:latest --platform linux/arm64,linux/amd64 --builder container --push .
+	@# do the actual multi-platform build, and push to DockerHub
+	docker buildx build -f Dockerfile --build-arg VERSION_OCTOPUS=${VERSION_OCTOPUS} \
+				--tag fangohr/octopus:${VERSION_OCTOPUS} \
+			 	--tag fangohr/octopus:latest \
+				--platform linux/arm64,linux/amd64 \
+				--builder container \
+				--push .
 
 
