@@ -2,13 +2,6 @@
 
 Potential points for improvement:
 
-- [[Dockerfile-debian][Dockerfile-debian]] and [[Dockerfile-debian-develop][Dockerfile-debian-develop]] are very similar, and so are
-  the ~.github/workflows~.
-
-- We currently build the containers for the architecture on which the job runs.
-  It should be possible to host docker images for multiple architectures (in
-  particular x86 and the M1/M2 processors) together at Dockerhub.
-
 - We use one particular combination of libraries and flags when compiling
   Octopus. This is not as flexible as using spack, for example. However, those
   flags etc can be adapted if necessary.
