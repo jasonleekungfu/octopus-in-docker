@@ -122,25 +122,24 @@ Step 1: How obtain a Docker container image with Octopus
 --------------------------------------------------------
 
 In this repository we provide a `Dockerfile <Dockerfile>`__ to compile Octopus
-13.0 and `Dockerfile-develop <Dockerfile-develop>`__ to compile the ``develop``
-branch of the Octopus repository in a container.
-
-The following examples are for the 14.0 release version. (To build a container
-for the latest Octopus version from the ``develop`` branch, replace
-``Dockerfile`` with ``Dockerfile-develop``.)
+in a container.
 
 Option A: Build the Docker image on your computer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 First clone this repository. Then run::
 
-  docker build -f Dockerfile -t octimage .
+  docker build -f Dockerfile --build-arg VERSION_OCTOPUS=14.0 -t octimage
 
-On Linux, you need to prefix all docker calls with ``sudo``::
+to build Octopus version ``14.0`` in the container. To use the current
+development version of Octopus (from the
+`gitlab repository <https://gitlab.com/octopus-code/octopus>`__), use``VERSION_OCTOPUS=develop``
+instead of ``VERSION_OCTOPUS=14.0``. Omitting the ``VERSION_OCTOPUS`` argument
+will by default pick the ``develop`` version.
 
-  sudo docker build -f Dockerfile -t octimage .
+This will take some time to complete. (On Linux, you may need to prefix all
+docker calls with ``sudo``.)
 
-This will take some time to complete.
 
 Option B: Download Docker image from Dockerhub
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
