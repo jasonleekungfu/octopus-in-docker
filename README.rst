@@ -113,52 +113,34 @@ inside the container.
 
 There are two steps required:
 
-- Step 1: build the container image (only once) or download it (only once).
+- Step 1: build the container image (only once) or download it (only once). For
+  downloading a pre-compiled Docker image and using that, please see
+  instructions above "Quick Start".
 
-- Step 2: use the container to execute Octopus inside the container
+- Step 2: use the container to execute Octopus inside the container.
 
-
-Step 1: How obtain a Docker container image with Octopus
---------------------------------------------------------
+Build the Docker image on your computer
+---------------------------------------
 
 In this repository we provide a `Dockerfile <Dockerfile>`__ to compile Octopus
 in a container.
-
-Option A: Build the Docker image on your computer
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 First clone this repository. Then run::
 
   docker build -f Dockerfile --build-arg VERSION_OCTOPUS=14.0 -t octimage
 
-to build Octopus version ``14.0`` in the container. To use the current
-development version of Octopus (from the
-`gitlab repository <https://gitlab.com/octopus-code/octopus>`__), use``VERSION_OCTOPUS=develop``
+to build Octopus version ``14.0`` in the container and create Docker image with name ``octimage``.
+
+To use the current development version of Octopus (from the `gitlab repository
+<https://gitlab.com/octopus-code/octopus>`__), use ``VERSION_OCTOPUS=develop``
 instead of ``VERSION_OCTOPUS=14.0``. Omitting the ``VERSION_OCTOPUS`` argument
 will by default pick the ``develop`` version.
 
 This will take some time to complete. (On Linux, you may need to prefix all
 docker calls with ``sudo``.)
 
-
-Option B: Download Docker image from Dockerhub
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Instead of building it yourself, you can also pull an image from Dockerhub
-(`available versions <https://hub.docker.com/r/fangohr/octopus/tags>`__) using::
-
-  docker pull fangohr/octopus:14.0
-
-and then move on to using this image in the next section, where you replace
-``octimage`` with ``fangohr/octopus:14.0``.
-
-If the ``docker pull`` command is not run, then docker will execute it
-automatically when a ``docker run`` command needs a particular image (such as
-``fangohr/octopus:14.0``).
-
-
-Step 2: Use the Docker image
-----------------------------
+Use the Docker image
+--------------------
 
 To use the Docker image::
 
