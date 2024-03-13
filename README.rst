@@ -48,7 +48,7 @@ Quick start
      replace this with ``bash`` if you want to start octopus manually from inside
      the container.
 
-   This is tested and known to work on OSX and Windows. On Linux, there is a
+   This is tested and known to work on macOS and Windows. On Linux, there is a
    permissions issue if (numerical) user id on the host system and in the
    container deviate.
 
