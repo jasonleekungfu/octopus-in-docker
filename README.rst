@@ -102,7 +102,7 @@ Introduction
 ------------
 
 If you have difficulties compiling Octopus, it might be useful to be able to run
-it in a container (for example on Windows or MacOS).
+it in a container (for example on Windows or macOS).
 
 The container provides a mini (Linux) Operating system, in which we can compile
 Octopus using a recipe (this is the Dockerfile, see below).
@@ -113,23 +113,23 @@ inside the container.
 
 There are two steps required:
 
-- Step 1: build the container image (only once) or download it (only once). For
+- Step 1: build the Docker image (only once) or download it (only once). For
   downloading a pre-compiled Docker image and using that, please see
   instructions above "Quick Start".
 
-- Step 2: use the container to execute Octopus inside the container.
+- Step 2: use Docker to execute Octopus inside the Docker container.
 
 Build the Docker image on your computer
 ---------------------------------------
 
 In this repository we provide a `Dockerfile <Dockerfile>`__ to compile Octopus
-in a container.
+inside a Docker container.
 
-First clone this repository. Then run::
+To do this, first clone this repository. Then run::
 
   docker build -f Dockerfile --build-arg VERSION_OCTOPUS=14.0 -t octimage
 
-to build Octopus version ``14.0`` in the container and create Docker image with name ``octimage``.
+to build Octopus version ``14.0`` in the container and create the Docker image with name ``octimage``.
 
 To use the current development version of Octopus (from the `gitlab repository
 <https://gitlab.com/octopus-code/octopus>`__), use ``VERSION_OCTOPUS=develop``
