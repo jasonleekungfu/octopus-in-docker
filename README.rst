@@ -32,7 +32,9 @@ Quick start
   
    The first time you run this, Docker needs to download the image
    ``fangohr/octopus`` from DockerHub. This could take a while (depending on your
-   internet connection, the image size is about 850MB).
+   internet connection, the image size is about 900MB). If we do not specify a version,
+   docker will download the
+   `image that is tagged as "latest" <https://hub.docker.com/r/fangohr/octopus/tags?page=1&name=latest>`__
 
    Meaning of the switches:
    
