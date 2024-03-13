@@ -119,7 +119,7 @@ In this repository we provide a `Dockerfile <Dockerfile>`__ to compile Octopus
 13.0 and `Dockerfile-develop <Dockerfile-develop>`__ to compile the ``develop``
 branch of the Octopus repository in a container.
 
-The following examples are for the 13.0 release version. (To build a container
+The following examples are for the 14.0 release version. (To build a container
 for the latest Octopus version from the ``develop`` branch, replace
 ``Dockerfile`` with ``Dockerfile-develop``.)
 
@@ -142,14 +142,14 @@ Option B: Download Docker image from Dockerhub
 Instead of building it yourself, you can also pull an image from Dockerhub
 (`available versions <https://hub.docker.com/r/fangohr/octopus/tags>`__) using::
 
-  docker pull fangohr/octopus:13.0
+  docker pull fangohr/octopus:14.0
 
 and then move on to using this image in the next section, where you replace
-``octimage`` with ``fangohr/octopus:13.0``.
+``octimage`` with ``fangohr/octopus:14.0``.
 
 If the ``docker pull`` command is not run, then docker will execute it
 automatically when a ``docker run`` command needs a particular image (such as
-``fangohr/octopus:13.0``).
+``fangohr/octopus:14.0``).
 
 
 Step 2: Use the Docker image
@@ -184,7 +184,7 @@ Status
 
 Status of building the Docker images:
 
-|stable| Debian Bookworm (12), Latest Octopus release (13.0)
+|stable| Debian Bookworm (12), Latest Octopus release (14.0)
 
 |develop| Debian Bookworm (12), Octopus develop branch
 

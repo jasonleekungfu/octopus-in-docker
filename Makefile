@@ -2,7 +2,7 @@
 # EXAMPLE: make stable
 # EXAMPLE: make develop
 # EXAMPLE: make stable VERSION_OCTOPUS=12.0
-VERSION_OCTOPUS?=13.0
+VERSION_OCTOPUS?=14.0
 
 stable:
 	docker build -f Dockerfile --build-arg VERSION_OCTOPUS=${VERSION_OCTOPUS} -t octopus .
