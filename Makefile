@@ -17,8 +17,8 @@ develop:
 dockerhub-update-multiarch:
 	@echo "If the container builds successfully, do this to push to dockerhub:"
 	@echo "Run 'docker login'"
-	@#if no builder exists yet:
-	docker buildx create --name container --driver=docker-container
+	@#if no builder exists yet, create one
+	docker buildx inspect || docker buildx create --name container --driver=docker-container
 	@# do the actual multi-platform build, and push to DockerHub
 	docker buildx build -f Dockerfile --build-arg VERSION_OCTOPUS=${VERSION_OCTOPUS} \
 				--tag fangohr/octopus:${VERSION_OCTOPUS} \
