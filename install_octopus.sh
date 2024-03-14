@@ -79,20 +79,3 @@ cat octopus-configlog-warnings
 # all in one line to make image smaller
 make -j && make install && make clean && make distclean
 
-
-
-if [ $version == "develop" ]; then
-  # Set ENV variable for external libs (only needed for octopus14.0 onwards)
-  echo "Section Issue 9 starts here. --------------"
-  echo "Issue 9: https://github.com/fangohr/octopus-in-docker/issues/9"
-  # DEBUG output
-  ldd /usr/local/bin/octopus | grep libsym
-  echo $LD_LIBRARY_PATH
-  # Setting LD_LIBRARY_PATH as follows works around the octopus bug described in
-  # https://github.com/fangohr/octopus-in-docker/issues/9 and also referenced in
-  # https://gitlab.com/octopus-code/octopus/-/issues/886
-  export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
-  echo $LD_LIBRARY_PATH
-  echo "Section Issue 9 ends here. ----------------"
-fi
-
