@@ -4,7 +4,7 @@ Repository for running (and if desired building) the
 Use case: run Octopus (for small calculations and tutorials) conveniently in a
 container, in particular on MacOS and Windows where compilation of Octopus may be non trivial.
 
-Octopus versions 13.0 and more recent are
+Octopus versions 12.0 and more recent are
 `available as Docker images <https://hub.docker.com/r/fangohr/octopus/tags>`__ for Intel (AMD64)
 and M1/M2/M3 (ARM64) processors.
 
