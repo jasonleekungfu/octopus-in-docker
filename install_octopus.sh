@@ -76,6 +76,7 @@ mkdir _build && pushd _build
 cat config.log | grep WARN > octopus-configlog-warnings
 cat octopus-configlog-warnings
 
-# all in one line to make image smaller
-make -j && make install && make clean && make distclean
-
+make -j
+make install
+make clean
+make distclean
