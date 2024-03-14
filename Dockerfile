@@ -5,7 +5,9 @@ FROM debian:bookworm
 # the version to install (latest stable or develop) is set by buildarg VERSION_OCTOPUS
 ARG VERSION_OCTOPUS=develop
 
-
+# On octopus>13 libsym (external-lib) is dynamically linked from /usr/local/lib.
+# As we run Octopus as root, we need to set LD_LIBRARY_PATH:
+ENV LD_LIBRARY_PATH="/usr/local/lib"
 
 # Install octopus dependencies and compile octopus.
 WORKDIR /opt
@@ -13,10 +15,6 @@ COPY *.sh /opt
 RUN bash /opt/install_dependencies.sh
 #   bash /opt/install_octopus.sh $VERSION_OCTOPUS $OCTOPUS_SOURCE_DIR $OCTOPUS_INSTALL_DIR
 RUN bash /opt/install_octopus.sh $VERSION_OCTOPUS /opt/octopus
-
-# on octopus>13 libsym (external-lib) is dynamically linked and hence needs LD_LIBRARY_PATH set
-# see https://github.com/fangohr/octopus-in-docker/issues/9
-ENV LD_LIBRARY_PATH="/usr/local/lib"
 
 WORKDIR /opt/octopus
 
