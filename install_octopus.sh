@@ -2,7 +2,7 @@
 # This script prepares the download of octopus in the right location given the version number, location to untar / clone and install prefix
 # example run:
 # $ ./install_octopus.sh --version 13.0 --download_dir /opt/octopus --install_dir /home/user/octopus-bin --build_system autotools
-# $ ./install_octopus.sh --version develop --download_dir /opt/octopus --build_system cmake
+# $ ./install_octopus.sh --version main --download_dir /opt/octopus --build_system cmake
 # Consider running install_dependencies.sh first to install all the dependencies on a debian based system
 
 # Function to display script usage
@@ -51,6 +51,9 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+# Set the default branch of the octopus code
+default_branch=main
+
 # Check if the version number and location is provided
 if [ -z "$version" ]; then
   echo "No version number provided"
@@ -87,7 +90,7 @@ cd "$location"
 
 # if develop is provided, clone the main branch
 
-if [ $version == "develop" ]; then
+if [ $version == $default_branch ]; then
   git clone https://gitlab.com/octopus-code/octopus.git .
 else
   # download the tar file
@@ -102,9 +105,9 @@ date=$(date)
 
 # Record the version number and date
 if [ $version == "develop" ]; then
-  # Record which version we are using
-  git log -1 --pretty=format:'%H %D' > octopus-source-version
-  echo "octopus-source-clone-date: $date " >> octopus-source-version
+    # Record which version we are using
+    git show > octopus-source-version
+    echo "octopus-source-clone-date: $date " >> octopus-source-version
 else
   # Record which version we are using
   echo "octopus-source-version: $version " > octopus-source-version

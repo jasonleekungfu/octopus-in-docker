@@ -10,7 +10,7 @@ stable:
 	docker build -f Dockerfile --build-arg VERSION_OCTOPUS=${VERSION_OCTOPUS} --build-arg BUILD_SYSTEM=${BUILD_SYSTEM} -t octopus .
 
 develop:
-	docker build -f Dockerfile --build-arg VERSION_OCTOPUS=develop --build-arg BUILD_SYSTEM=${BUILD_SYSTEM} -t octopus-develop .
+	docker build -f Dockerfile --build-arg VERSION_OCTOPUS=main --build-arg BUILD_SYSTEM=${BUILD_SYSTEM} -t octopus-develop .
 
 .PHONY: stable develop dockerhub-update-multiarch
 
