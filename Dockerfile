@@ -12,7 +12,7 @@ ENV LD_LIBRARY_PATH="/usr/local/lib"
 # Install octopus dependencies and compile octopus.
 WORKDIR /opt
 COPY *.sh /opt
-RUN bash /opt/install_dependencies.sh
+RUN bash /opt/install_dependencies.sh && rm -rf /var/lib/apt/lists/*
 #   bash /opt/install_octopus.sh $VERSION_OCTOPUS $OCTOPUS_SOURCE_DIR $OCTOPUS_INSTALL_DIR
 RUN bash /opt/install_octopus.sh $VERSION_OCTOPUS /opt/octopus
 
