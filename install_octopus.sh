@@ -142,7 +142,7 @@ if [ $build_system == "cmake" ]; then
 elif [ $build_system == "autotools" ]; then
   mkdir _build
   pushd _build
-  autoreconf -i
+  autoreconf -i ..
 
   # We need to set FCFLAGS_ELPA as the octopus m4 has a bug
   # see https://gitlab.com/octopus-code/octopus/-/issues/900
@@ -159,5 +159,6 @@ elif [ $build_system == "autotools" ]; then
   make install
   make clean
   make distclean
+  popd
 fi
 
