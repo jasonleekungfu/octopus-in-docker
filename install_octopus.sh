@@ -133,8 +133,7 @@ if [ $build_system == "cmake" ]; then
   # ctest --test-dir cmake-build-release -L short-run -j $(nproc)  # check short
   # ctest --test-dir cmake-build-release -LE short-run -j $(nproc) # check long
   # ctest --test-dir cmake-build-release -j $(nproc) # check
-
-  cmake --install cmake-build
+  cmake --install cmake-build-release
 
   # clean build
   cmake --build cmake-build-release --target clean
