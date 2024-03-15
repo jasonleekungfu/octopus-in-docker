@@ -16,6 +16,7 @@ apt-get -y install wget time nano vim emacs \
     autoconf \
     automake \
     build-essential \
+    cmake \
     g++ \
     gcc \
     gfortran \
@@ -44,7 +45,7 @@ apt-get -y install wget time nano vim emacs \
     openctm-tools \
     pkg-config \
     procps
-    
+
 
 # Add optional packages not needed by octopus (for visualization)
 apt-get -y install gnuplot
