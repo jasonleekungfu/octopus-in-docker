@@ -51,7 +51,5 @@ apt-get -y install gnuplot
 
 # Add packages required to build via cmake
 apt-get -y install \
-    # Build dependencies
     cmake ninja-build pkgconf \
-    # Octopus dependencies
     libsymspg-dev libspglib-f08-dev
