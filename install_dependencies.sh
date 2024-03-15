@@ -16,7 +16,6 @@ apt-get -y install wget time nano vim emacs \
     autoconf \
     automake \
     build-essential \
-    cmake \
     g++ \
     gcc \
     gfortran \
@@ -49,3 +48,10 @@ apt-get -y install wget time nano vim emacs \
 
 # Add optional packages not needed by octopus (for visualization)
 apt-get -y install gnuplot
+
+# Add packages required to build via cmake
+apt-get -y install \
+    # Build dependencies
+    cmake ninja-build pkgconf \
+    # Octopus dependencies
+    libsymspg-dev libspglib-f08-dev
