@@ -74,6 +74,7 @@ else
   if [ "$build_system" != "autotools" ] && [ "$build_system" != "cmake" ]; then
     echo "Invalid build system provided"
     usage
+  fi
 fi
 
 ## MAIN ##
