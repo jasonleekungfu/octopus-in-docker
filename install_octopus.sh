@@ -89,7 +89,7 @@ date=$(date)
 # Record the version number and date
 if [ $version == "develop" ]; then
   # Record which version we are using
-  git show > octopus-source-version
+  git log -1 --pretty=format:'%H %D' > octopus-source-version
   echo "octopus-source-clone-date: $date " >> octopus-source-version
 else
   # Record which version we are using
