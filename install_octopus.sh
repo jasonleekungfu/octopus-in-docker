@@ -111,18 +111,38 @@ else
   echo "octopus-source-download-date: $date " >> octopus-source-version
 fi
 
-
-mkdir _build
-pushd _build
-
 # Build octopus
 if [ $build_system == "cmake" ]; then
+
+  # Patch spglib packaging issues
+  echo "Requires: spglib" >> /usr/lib/x86_64-linux-gnu/pkgconfig/spglib_f08.pc
+
+  # Remove libxc CMake files because they are not packaged correctly
+  rm -rf /usr/share/cmake/Libxc/
+
   # configure
-  cmake -DCMAKE_INSTALL_PREFIX="$prefix" ..
-  popd
+  cmake --preset default -G Ninja --install-prefix "$prefix"
+
+  # check that no external libs are required
+  # ls cmake-build-release/_deps
+
+  # build
+  cmake --build --preset default -j $(nproc)
+
+  # TODO: test the build ( before clean)
+  # ctest --test-dir cmake-build-release -L short-run -j $(nproc)  # check short
+  # ctest --test-dir cmake-build-release -LE short-run -j $(nproc) # check long
+  # ctest --test-dir cmake-build-release -j $(nproc) # check
+
+  cmake --install cmake-build
+
+  # clean build
+  cmake --build cmake-build-release --target clean
 
 elif [ $build_system == "autotools" ]; then
-  autoreconf -i ..
+  mkdir _build
+  pushd _build
+  autoreconf -i
 
   # We need to set FCFLAGS_ELPA as the octopus m4 has a bug
   # see https://gitlab.com/octopus-code/octopus/-/issues/900
@@ -134,10 +154,10 @@ elif [ $build_system == "autotools" ]; then
   cat config.log | grep WARN > octopus-configlog-warnings
   cat octopus-configlog-warnings
 
+  # build
+  make -j
+  make install
+  make clean
+  make distclean
 fi
 
-# Common steps for both build systems
-make -j
-make install
-make clean
-make distclean
