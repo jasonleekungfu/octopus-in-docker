@@ -110,19 +110,32 @@ else
   echo "octopus-source-download-date: $date " >> octopus-source-version
 fi
 
-autoreconf -i
 
-# We need to set FCFLAGS_ELPA as the octopus m4 has a bug
-# see https://gitlab.com/octopus-code/octopus/-/issues/900
-export FCFLAGS_ELPA="-I/usr/include -I/usr/include/elpa/modules"
-mkdir _build && pushd _build
-# configure
-../configure --enable-mpi --enable-openmp --with-blacs="-lscalapack-openmpi" --prefix="$prefix"
+mkdir _build
+pushd _build
 
-# Which optional dependencies are missing?
-cat config.log | grep WARN > octopus-configlog-warnings
-cat octopus-configlog-warnings
+# Build octopus
+if [ $build_system == "cmake" ]; then
+  # configure
+  cmake -DCMAKE_INSTALL_PREFIX="$prefix" ..
+  popd
 
+elif [ $build_system == "autotools" ]; then
+  autoreconf -i
+
+  # We need to set FCFLAGS_ELPA as the octopus m4 has a bug
+  # see https://gitlab.com/octopus-code/octopus/-/issues/900
+  export FCFLAGS_ELPA="-I/usr/include -I/usr/include/elpa/modules"
+  # configure
+  ../configure --enable-mpi --enable-openmp --with-blacs="-lscalapack-openmpi" --prefix="$prefix"
+
+  # Which optional dependencies are missing?
+  cat config.log | grep WARN > octopus-configlog-warnings
+  cat octopus-configlog-warnings
+
+fi
+
+# Common steps for both build systems
 make -j
 make install
 make clean
