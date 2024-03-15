@@ -1,19 +1,18 @@
 #!/bin/bash
 # This script prepares the download of octopus in the right location given the version number, location to untar / clone and install prefix
 # example run:
-# $ ./install_octopus.sh --version 13.0 --download_dir /opt/octopus --install_dir /home/user/octopus-bin
-# $ ./install_octopus.sh --version develop --download_dir /opt/octopus
+# $ ./install_octopus.sh --version 13.0 --download_dir /opt/octopus --install_dir /home/user/octopus-bin --build_system autotools
+# $ ./install_octopus.sh --version develop --download_dir /opt/octopus --build_system cmake
 # Consider running install_dependencies.sh first to install all the dependencies on a debian based system
-
-
 
 # Function to display script usage
 usage() {
-  echo "Usage: $0 [--version <version_number>] [--download_dir <download_location>] [--install_dir <install_prefix>]"
+  echo "Usage: $0 [--version <version_number>] [--download_dir <download_location>] [--install_dir <install_prefix>] [--build_system <autotools|cmake>]"
   echo "Options:"
   echo "  --version <version_number>      Specify the version number of Octopus (e.g., 13.0, develop)"
   echo "  --download_dir <download_location>   Specify the download location for Octopus source (default: current directory)"
   echo "  --install_dir <install_prefix>   Specify the install prefix for Octopus (default: /usr/local)"
+  echo "  --build_system <autotools|cmake> Specify the build system to use (default: autotools)"
   echo "  -h, --help                      Display this help message"
   exit 1
 }
@@ -34,6 +33,11 @@ while [[ $# -gt 0 ]]; do
       ;;
     --install_dir)
       prefix="$2"
+      shift
+      shift
+      ;;
+    --build_system)
+      build_system="$2"
       shift
       shift
       ;;
@@ -61,6 +65,15 @@ fi
 if [ -z "$prefix" ]; then
   echo "No install prefix provided using default location"
   prefix="/usr/local"
+fi
+
+if [ -z "$build_system" ]; then
+  echo "No build system provided, using autotools as default"
+  build_system="autotools"
+else
+  if [ "$build_system" != "autotools" ] && [ "$build_system" != "cmake" ]; then
+    echo "Invalid build system provided"
+    usage
 fi
 
 ## MAIN ##
