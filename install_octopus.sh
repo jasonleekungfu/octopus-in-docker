@@ -12,7 +12,7 @@ usage() {
   echo "Usage: $0 [--version <version_number>] [--download_dir <download_location>] [--install_dir <install_prefix>]"
   echo "Options:"
   echo "  --version <version_number>      Specify the version number of Octopus (e.g., 13.0, develop)"
-  echo "  --download_dir <download_location>   Specify the download location for Octopus source"
+  echo "  --download_dir <download_location>   Specify the download location for Octopus source (default: current directory)"
   echo "  --install_dir <install_prefix>   Specify the install prefix for Octopus (default: /usr/local)"
   echo "  -h, --help                      Display this help message"
   exit 1
@@ -54,8 +54,8 @@ if [ -z "$version" ]; then
 fi
 
 if [ -z "$location" ]; then
-  echo "No download location provided"
-  usage
+  echo "No download location provided, using current directory"
+  location=$(pwd)
 fi
 
 if [ -z "$prefix" ]; then
