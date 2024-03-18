@@ -29,7 +29,7 @@ Quick start
 3. Then run::
 
     docker run --rm -ti -v $PWD:/io fangohr/octopus octopus
-  
+
    The first time you run this, Docker needs to download the image
    ``fangohr/octopus`` from DockerHub. This could take a while (depending on your
    internet connection, the image size is about 900MB). If we do not specify a version,
@@ -37,13 +37,13 @@ Quick start
    `image that is tagged as "latest" <https://hub.docker.com/r/fangohr/octopus/tags?page=1&name=latest>`__
 
    Meaning of the switches:
-   
+
    - ``--rm`` remove docker container after it has been carried out (good practice to reduce disk usage).
-   - ``-ti`` start an Interactive  pseudo-Tty shell in the container 
+   - ``-ti`` start an Interactive  pseudo-Tty shell in the container
    - ``-v $PWD:/io``: take the current working directory (``$PWD``) and mount it
      in the container in the location ``/io``. This is also the default working
      directory of the container.
-   - ``fangohr/octopus`` is the name of the container image. The next 
+   - ``fangohr/octopus`` is the name of the container image. The next
    - ``octopus`` is the name of the executable to run in the container. You can
      replace this with ``bash`` if you want to start octopus manually from inside
      the container.
@@ -53,11 +53,11 @@ Quick start
    container deviate.
 
    To check which Octopus version you have in the container, you can use::
- 
+
       docker run --rm -ti -v $PWD:/io fangohr/octopus octopus --version
 
    If you want to use multiple MPI processes (for example 4), change the above line to::
-   
+
        docker run --rm -ti -v $PWD:/io fangohr/octopus mpirun -np 4 octopus
 
    If you want to use a different Octopus version you can check the `available
@@ -65,7 +65,7 @@ Quick start
    version (for example `13.0`) to the Docker image in the command line::
 
       docker run --rm -ti -v $PWD:/io fangohr/octopus:13.0 octopus --version
-  
+
 Typical workflow with Octopus in container
 ------------------------------------------
 
@@ -74,7 +74,7 @@ Typical workflow with Octopus in container
 - call Octopus (in the container) by running ::
 
       docker run --rm -ti -v $PWD:/io fangohr/octopus octopus
-  
+
   Only the ``octopus`` command will be carried out in the
   container. Any output files are written to the current directory on the host.
 
@@ -83,7 +83,7 @@ Typical workflow with Octopus in container
 If you want to work interactively *inside* the container, replace the name of the executable with ``bash``::
 
   docker run --rm -ti -v $PWD:/io fangohr/octopus bash
-  
+
 You are then the root user in the container. Octopus was compiled in ``/opt/octopus*``. There are also some trivial example input files in ``/opt/octopus-examples``.
 
 What follows is more detailed documentation which is hopefully not needed for most people.
@@ -95,7 +95,7 @@ Documentation for advanced users and developers
 
 .. sectnum::
 
-.. contents:: 
+.. contents::
 
 
 Introduction
@@ -165,6 +165,14 @@ or use ``uname -m`` inside the container.)
 .. |develop| image:: https://github.com/fangohr/octopus-in-docker/actions/workflows/develop.yml/badge.svg
    :target: https://github.com/fangohr/octopus-in-docker/actions/workflows/debian-develop.yml
 
+A note on Build System
+-----------------------
+Octopus from 14.0 onwards supports CMake as a build system. The Dockerfile uses the build arg `BUILD_SYSTEM` to specify the build system.
+The default value is `autotools`. If you want to use CMake as the build system pass `--build-arg BUILD_SYSTEM=cmake` to the `docker build` command.
+Alternatively, you can set the environment variable `BUILD_SYSTEM` to `cmake`. For eg:
+```
+make stable BUILD_SYSTEM=cmake
+```
 
 Status
 ======
