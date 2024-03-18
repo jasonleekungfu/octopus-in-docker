@@ -2,9 +2,9 @@ name: develop-cmake
 
 on:
   push:
-    branches: [ main ]
+    branches: [ cmake_main ]
   pull_request:
-    branches: [ main ]
+    branches: [ cmake_main ]
   workflow_dispatch:
   schedule:
     # run once per month
