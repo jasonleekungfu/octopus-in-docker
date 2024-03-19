@@ -44,7 +44,12 @@ apt-get -y install wget time nano vim emacs \
     openctm-tools \
     pkg-config \
     procps
-    
+
 
 # Add optional packages not needed by octopus (for visualization)
 apt-get -y install gnuplot
+
+# Add packages required to build via cmake
+apt-get -y install \
+    cmake ninja-build pkgconf \
+    libsymspg-dev libspglib-f08-dev

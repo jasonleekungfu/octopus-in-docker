@@ -1,19 +1,18 @@
 #!/bin/bash
 # This script prepares the download of octopus in the right location given the version number, location to untar / clone and install prefix
 # example run:
-# $ ./install_octopus.sh --version 13.0 --download_dir /opt/octopus --install_dir /home/user/octopus-bin
-# $ ./install_octopus.sh --version develop --download_dir /opt/octopus
+# $ ./install_octopus.sh --version 13.0 --download_dir /opt/octopus --install_dir /home/user/octopus-bin --build_system autotools
+# $ ./install_octopus.sh --version develop --download_dir /opt/octopus --build_system cmake
 # Consider running install_dependencies.sh first to install all the dependencies on a debian based system
-
-
 
 # Function to display script usage
 usage() {
-  echo "Usage: $0 [--version <version_number>] [--download_dir <download_location>] [--install_dir <install_prefix>]"
+  echo "Usage: $0 [--version <version_number>] [--download_dir <download_location>] [--install_dir <install_prefix>] [--build_system <autotools|cmake>]"
   echo "Options:"
   echo "  --version <version_number>      Specify the version number of Octopus (e.g., 13.0, develop)"
   echo "  --download_dir <download_location>   Specify the download location for Octopus source (default: current directory)"
   echo "  --install_dir <install_prefix>   Specify the install prefix for Octopus (default: /usr/local)"
+  echo "  --build_system <autotools|cmake> Specify the build system to use (default: autotools)"
   echo "  -h, --help                      Display this help message"
   exit 1
 }
@@ -34,6 +33,11 @@ while [[ $# -gt 0 ]]; do
       ;;
     --install_dir)
       prefix="$2"
+      shift
+      shift
+      ;;
+    --build_system)
+      build_system="$2"
       shift
       shift
       ;;
@@ -61,6 +65,16 @@ fi
 if [ -z "$prefix" ]; then
   echo "No install prefix provided using default location"
   prefix="/usr/local"
+fi
+
+if [ -z "$build_system" ]; then
+  echo "No build system provided, using autotools as default"
+  build_system="autotools"
+else
+  if [ "$build_system" != "autotools" ] && [ "$build_system" != "cmake" ]; then
+    echo "Invalid build system provided"
+    usage
+  fi
 fi
 
 ## MAIN ##
@@ -97,20 +111,53 @@ else
   echo "octopus-source-download-date: $date " >> octopus-source-version
 fi
 
-autoreconf -i
+# Build octopus
+if [ $build_system == "cmake" ]; then
 
-# We need to set FCFLAGS_ELPA as the octopus m4 has a bug
-# see https://gitlab.com/octopus-code/octopus/-/issues/900
-export FCFLAGS_ELPA="-I/usr/include -I/usr/include/elpa/modules"
-mkdir _build && pushd _build
-# configure
-../configure --enable-mpi --enable-openmp --with-blacs="-lscalapack-openmpi" --prefix="$prefix"
+  # Patch spglib packaging issues
+  echo "Requires: spglib" >> /usr/lib/x86_64-linux-gnu/pkgconfig/spglib_f08.pc
 
-# Which optional dependencies are missing?
-cat config.log | grep WARN > octopus-configlog-warnings
-cat octopus-configlog-warnings
+  # Remove libxc CMake files because they are not packaged correctly
+  rm -rf /usr/share/cmake/Libxc/
 
-make -j
-make install
-make clean
-make distclean
+  # configure
+  cmake --preset default -DOCTOPUS_OpenMP=ON -DOCTOPUS_MPI=ON -DOCTOPUS_ScaLAPACK=ON -G Ninja --install-prefix "$prefix"
+
+  # check that no external libs are required
+  # ls cmake-build-release/_deps
+
+  # build
+  cmake --build --preset default -j $(nproc)
+
+  # TODO: test the build ( before clean)
+  # ctest --test-dir cmake-build-release -L short-run -j $(nproc)  # check short
+  # ctest --test-dir cmake-build-release -LE short-run -j $(nproc) # check long
+  # ctest --test-dir cmake-build-release -j $(nproc) # check
+  cmake --install cmake-build-release
+
+  # clean build
+  cmake --build cmake-build-release --target clean
+
+elif [ $build_system == "autotools" ]; then
+  mkdir _build
+  pushd _build
+  autoreconf -i ..
+
+  # We need to set FCFLAGS_ELPA as the octopus m4 has a bug
+  # see https://gitlab.com/octopus-code/octopus/-/issues/900
+  export FCFLAGS_ELPA="-I/usr/include -I/usr/include/elpa/modules"
+  # configure
+  ../configure --enable-mpi --enable-openmp --with-blacs="-lscalapack-openmpi" --prefix="$prefix"
+
+  # Which optional dependencies are missing?
+  cat config.log | grep WARN > octopus-configlog-warnings
+  cat octopus-configlog-warnings
+
+  # build
+  make -j
+  make install
+  make clean
+  make distclean
+  popd
+fi
+

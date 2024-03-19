@@ -5,6 +5,9 @@ FROM debian:bookworm
 # the version to install (latest stable or develop) is set by buildarg VERSION_OCTOPUS
 ARG VERSION_OCTOPUS=develop
 
+# the build system to use (autotools or cmake)
+ARG BUILD_SYSTEM=autotools
+
 # On octopus>13 libsym (external-lib) is dynamically linked from /usr/local/lib.
 # As we run Octopus as root, we need to set LD_LIBRARY_PATH:
 ENV LD_LIBRARY_PATH="/usr/local/lib"
@@ -13,7 +16,7 @@ ENV LD_LIBRARY_PATH="/usr/local/lib"
 WORKDIR /opt
 COPY *.sh /opt
 RUN bash /opt/install_dependencies.sh && rm -rf /var/lib/apt/lists/*
-RUN bash /opt/install_octopus.sh --version $VERSION_OCTOPUS --download_dir /opt/octopus
+RUN bash /opt/install_octopus.sh --version $VERSION_OCTOPUS --download_dir /opt/octopus --build_system $BUILD_SYSTEM
 
 WORKDIR /opt/octopus
 
