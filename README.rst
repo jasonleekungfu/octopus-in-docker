@@ -165,11 +165,11 @@ or use ``uname -m`` inside the container.)
 .. |develop| image:: https://github.com/fangohr/octopus-in-docker/actions/workflows/develop.yml/badge.svg
    :target: https://github.com/fangohr/octopus-in-docker/actions/workflows/debian-develop.yml
 
-A note on Build System
------------------------
-Octopus from 14.0 onwards supports CMake as a build system. The Dockerfile uses the build arg `BUILD_SYSTEM` to specify the build system.
-The default value is `autotools`. If you want to use CMake as the build system pass `--build-arg BUILD_SYSTEM=cmake` to the `docker build` command.
-Alternatively, you can set the environment variable `BUILD_SYSTEM` to `cmake`. For eg:
+CMAKE or autotools as the configuration and build system
+--------------------------------------------------------
+Octopus from 14.0 onwards supports CMake as a build system. The Dockerfile uses the build arg ``BUILD_SYSTEM`` to specify the build system.
+The default value is ``autotools``. If you want to use CMake as the build system, then pass ``--build-arg BUILD_SYSTEM=cmake`` to the ``docker build`` command.
+Alternatively, you can set the environment variable ``BUILD_SYSTEM`` to ``cmake``. For eg:
 ```
 make stable BUILD_SYSTEM=cmake
 ```
