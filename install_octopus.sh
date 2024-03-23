@@ -107,16 +107,16 @@ if [[ $version =~ ^[0-9]+(\.[0-9]+)$ ]]; then
   # rm octopus-$version.tar.gz
 
   # Record which version we are using
-  git show > octopus-source-version
-  echo "octopus-source-clone-date: $date " >> octopus-source-version
+  echo "octopus-source-version: $version " > octopus-source-version
+  echo "octopus-source-download-date: $date " >> octopus-source-version
 else
   echo "Cloning Octopus branch '$version'"
   git clone https://gitlab.com/octopus-code/octopus.git .
   git checkout $version
 
   # Record which version we are using
-  echo "octopus-source-version: $version " > octopus-source-version
-  echo "octopus-source-download-date: $date " >> octopus-source-version
+  git show > octopus-source-version
+  echo "octopus-source-clone-date: $date " >> octopus-source-version
 fi
 
 
