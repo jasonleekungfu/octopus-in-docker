@@ -9,7 +9,7 @@
 usage() {
   echo "Usage: $0 [--version <version_number>] [--download_dir <download_location>] [--install_dir <install_prefix>] [--build_system <autotools|cmake>]"
   echo "Options:"
-  echo "  --version <version_number>      Specify the version number of Octopus (e.g., 13.0, develop)"
+  echo "  --version <version_number>      Specify the version number / branch name of Octopus (e.g., 13.0, develop, test-branch-a)"
   echo "  --download_dir <download_location>   Specify the download location for Octopus source (default: current directory)"
   echo "  --install_dir <install_prefix>   Specify the install prefix for Octopus (default: /usr/local)"
   echo "  --build_system <autotools|cmake> Specify the build system to use (default: autotools)"
@@ -51,14 +51,13 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# Set the default branch of the octopus code
-default_branch=main
 
 # Check if the version number and location is provided
 if [ -z "$version" ]; then
   echo "No version number provided"
   usage
 fi
+
 
 if [ -z "$location" ]; then
   echo "No download location provided, using current directory"
@@ -88,31 +87,38 @@ mkdir -p "$location"
 
 cd "$location"
 
-# if develop is provided, clone the main branch
 
-if [ $version == $default_branch ]; then
-  git clone https://gitlab.com/octopus-code/octopus.git .
-else
+# decide if we are using a branch from source or a release
+# Rule: if the version number is numeric then it is a release (e.g., 13.0, 11.3, 14.1 etc.).
+#       Anything else is then a branch (e.g., develop, test-branch-a, main etc.)
+# then perform 3 steps:
+# 1. download / clone  the source
+# 2. unpack the source / checkout the branch
+# 2. record the metadata of the source (release version / branch commit hash, date)
+
+date=$(date)
+if [[ $version =~ ^[0-9]+(\.[0-9]+)$ ]]; then
+  echo "Downloading Octopus release version '$version'"
   # download the tar file
   wget https://octopus-code.org/download/${version}/octopus-${version}.tar.gz
   tar -xvf octopus-${version}.tar.gz
   mv octopus-$version/* .
   rm -rf octopus-$version
   # rm octopus-$version.tar.gz
-fi
 
-date=$(date)
-
-# Record the version number and date
-if [ $version == "develop" ]; then
-    # Record which version we are using
-    git show > octopus-source-version
-    echo "octopus-source-clone-date: $date " >> octopus-source-version
+  # Record which version we are using
+  git show > octopus-source-version
+  echo "octopus-source-clone-date: $date " >> octopus-source-version
 else
+  echo "Cloning Octopus branch '$version'"
+  git clone https://gitlab.com/octopus-code/octopus.git .
+  git checkout $version
+
   # Record which version we are using
   echo "octopus-source-version: $version " > octopus-source-version
   echo "octopus-source-download-date: $date " >> octopus-source-version
 fi
+
 
 # Build octopus
 if [ $build_system == "cmake" ]; then
