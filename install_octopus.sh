@@ -9,7 +9,7 @@
 usage() {
   echo "Usage: $0 [--version <version_number>] [--download_dir <download_location>] [--install_dir <install_prefix>] [--build_system <autotools|cmake>]"
   echo "Options:"
-  echo "  --version <version_number>      Specify the version number / branch name of Octopus (e.g., 13.0, develop, test-branch-a)"
+  echo "  --version <version_number>      Specify the version number / branch name of Octopus (e.g., 13.0, main, test-branch-a)"
   echo "  --download_dir <download_location>   Specify the download location for Octopus source (default: current directory)"
   echo "  --install_dir <install_prefix>   Specify the install prefix for Octopus (default: /usr/local)"
   echo "  --build_system <autotools|cmake> Specify the build system to use (default: autotools)"
