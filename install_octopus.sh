@@ -154,9 +154,9 @@ elif [ $build_system == "autotools" ]; then
 
   # We need to set FCFLAGS_ELPA as the octopus m4 has a bug
   # see https://gitlab.com/octopus-code/octopus/-/issues/900
-  export FCFLAGS_ELPA="-I/usr/include -I/usr/include/elpa/modules"
+  export FCFLAGS_ELPA="-I/usr/include -I/usr/include/elpa/modules -fallow-argument-mismatch "
   # configure
-  ../configure --enable-mpi --enable-openmp --with-blacs="-lscalapack-openmpi" --prefix="$prefix"
+  ../configure --enable-mpi --enable-openmp --enable-cuda --with-cuda-prefix=/usr/local/cuda --with-blacs="-lscalapack-openmpi" --prefix="$prefix"
 
   # Which optional dependencies are missing?
   cat config.log | grep WARN > octopus-configlog-warnings
