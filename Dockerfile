@@ -32,16 +32,12 @@ RUN bash /opt/install_octopus.sh --version $VERSION_OCTOPUS --download_dir /opt/
 
 # CUDA will be disabled via environmental variables during testing for building on machines w/o GPU devices
 
-# Enable parsing environmental variables 
-# By doing this, GPU can be disabled by setting OCT_DisableAccel=1
-ENV OCT_PARSE_ENV=1
-
 # Change work directory
 WORKDIR /opt/octopus
 
 # Show octopus version
-RUN OCT_DisableAccel=1 octopus --version > octopus-version
-RUN OCT_DisableAccel=1 octopus --version
+RUN octopus --version > octopus-version
+RUN octopus --version
 
 # The next command returns an error code as some tests fail
 # RUN make check-short
@@ -50,9 +46,9 @@ RUN mkdir -p /opt/octopus-examples
 COPY examples /opt/octopus-examples
 
 # Instead of tests, run two short examples
-RUN cd /opt/octopus-examples/recipe && OCT_DisableAccel=1 octopus
-RUN cd /opt/octopus-examples/h-atom && OCT_DisableAccel=1 octopus
-RUN cd /opt/octopus-examples/he && OCT_DisableAccel=1 octopus
+RUN cd /opt/octopus-examples/recipe && octopus
+RUN cd /opt/octopus-examples/h-atom && octopus
+RUN cd /opt/octopus-examples/he && octopus
 
 # allow root execution of mpirun
 ENV OMPI_ALLOW_RUN_AS_ROOT=1
@@ -63,11 +59,11 @@ ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 #ENV OMP_NUM_THREADS=1
 
 # run one MPI-enabled version
-RUN cd /opt/octopus-examples/he && OCT_DisableAccel=1 mpirun -np 1 octopus
-RUN cd /opt/octopus-examples/he && OCT_DisableAccel=1 mpirun -np 2 octopus
+RUN cd /opt/octopus-examples/he && mpirun -np 1 octopus
+RUN cd /opt/octopus-examples/he && mpirun -np 2 octopus
 
 # test the libraries used by octopus
-RUN cd /opt/octopus-examples/recipe && OCT_DisableAccel=1 octopus > /tmp/octopus-recipe.out
+RUN cd /opt/octopus-examples/recipe && octopus > /tmp/octopus-recipe.out
 # test that the libraries are mentioned in the configuration options section of octopus output
 RUN grep "Configuration options" /tmp/octopus-recipe.out | grep "openmp"
 RUN grep "Configuration options" /tmp/octopus-recipe.out | grep "mpi"

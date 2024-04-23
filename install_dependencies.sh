@@ -60,6 +60,7 @@ cd openmpi-4.1.2
     --with-pmi=/usr --with-pmi-libdir=/usr/lib/x86_64-linux-gnu --without-verbs
 make -j $(nproc)
 make install
+cd .. && rm -rf openmpi-4.1.2
 
 # Add packages required to build via cmake
 # Disabled for GPU support. CUDA base image only supports Ubuntu up to 22.04, 
@@ -67,3 +68,6 @@ make install
 #apt-get -y install \
 #    cmake ninja-build pkgconf \
 #    libsymspg-dev libspglib-f08-dev
+
+# Clean up
+apt clean
