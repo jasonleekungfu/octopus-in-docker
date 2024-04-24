@@ -24,13 +24,13 @@ WORKDIR /opt
 COPY *.sh /opt
 RUN bash /opt/install_dependencies.sh && rm -rf /var/lib/apt/lists/*
 RUN bash /opt/install_octopus.sh --version $VERSION_OCTOPUS --download_dir /opt/octopus --build_system autotools
-
+RUN rm /opt/*.sh
 
 # ---------------------------------------------------------------------
 # Test Octopus
 # ---------------------------------------------------------------------
 
-# CUDA will be disabled via environmental variables during testing for building on machines w/o GPU devices
+# CUDA is disabled by default for testing on machines w/o GPU devices
 
 # Change work directory
 WORKDIR /opt/octopus
@@ -55,8 +55,8 @@ ENV OMPI_ALLOW_RUN_AS_ROOT=1
 ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
 # set number of OpenMP threads to 1 by default
-# Disabled because most of HPC users will customize by running with srun. -Jason
-#ENV OMP_NUM_THREADS=1
+# Only during test phase because users will most likely customize it when running actual jobs. -Jason
+ARG OMP_NUM_THREADS=1
 
 # run one MPI-enabled version
 RUN cd /opt/octopus-examples/he && mpirun -np 1 octopus

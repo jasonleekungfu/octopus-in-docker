@@ -175,6 +175,3 @@ elif [ $build_system == "autotools" ]; then
   make distclean
   popd
 fi
-
-# Clean up
-rm -rf $location
