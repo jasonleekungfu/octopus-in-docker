@@ -7,60 +7,41 @@
 # exit on error and print each command
 set -xe
 
-# Convenience tools (up to emacs)
-# Libraries that octopus needs
-# and optional dependencies (in alphabetical order)
-apt-get -y update
-
-apt-get -y install wget time nano vim emacs \
-    autoconf \
-    automake \
-    build-essential \
-    g++ \
-    gcc \
-    gfortran \
-    git \
-    libatlas-base-dev \
-    libblas-dev \
-    libboost-dev \
-    libcgal-dev \
-    libelpa-dev \
-    libetsf-io-dev \
-    libfftw3-dev \
-    libfftw3-mpi-dev \
-    libgmp-dev \
-    libgsl-dev \
-    liblapack-dev \
-    liblapack-dev \
-    libmpfr-dev \
-    libnetcdff-dev \
-    libnlopt-dev \
-    libscalapack-mpi-dev \
-    libspfft-dev \
-    libtool \
-    libxc-dev \
-    libyaml-dev \
-    openscad \
-    openctm-tools \
-    pkg-config \
-    procps
-#    libopenmpi-dev \
-
+# Convenience tools
+apt update
+apt -y install wget vim autoconf libtool
 
 # Add optional packages not needed by octopus (for visualization)
-apt-get -y install gnuplot
+apt -y install gnuplot
 
-# Install OpenMPI w/ PMI2
-apt-get install -y build-essential
-apt-get install -y wget hwloc libpmi2-0 libpmi2-0-dev
-wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.2.tar.gz
-tar zxvf openmpi-4.1.2.tar.gz && rm openmpi-4.1.2.tar.gz
-cd openmpi-4.1.2
-./configure --with-hwloc=internal --with-slurm \
-    --with-pmi=/usr --with-pmi-libdir=/usr/lib/x86_64-linux-gnu --without-verbs
-make -j $(nproc)
-make install
-cd .. && rm -rf openmpi-4.1.2
+# Install CUDA driver and toolkit
+apt -y install nvidia-driver-550
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+dpkg -i cuda-keyring_1.1-1_all.deb
+apt update
+apt -y install cuda
+rm cuda-keyring_1.1-1_all.deb
+
+# Following dependencies are compiled manually w/ Intel OneAPI because apt installed ones
+# are not in conventional directories and having trouble to be found by Intel compilers
+
+# 1. Install FFTW (3.3.10):
+wget http://fftw.org/fftw-3.3.10.tar.gz && tar xf fftw-3.3.10.tar.gz && cd fftw-3.3.10
+./configure CC=icx F77=ifx MPICC=mpiicx MPICXX=mpiicpx MPIFC=mpiifx --enable-mpi --enable-openmp
+make -j`nproc` && make install
+cd .. && rm -rf fftw*
+
+# 2. Instal gsl (2.7.1)
+wget https://mirror.ibcp.fr/pub/gnu/gsl/gsl-latest.tar.gz && tar xf gsl-latest.tar.gz && cd gsl-2.7.1/
+./configure CC=icx CXX=icpx FC=ifx -disable-shared --enable-static
+make -j`nproc` && make install
+cd .. && rm -rf gsl*
+
+# 3. Install libxc (6.2.2):
+wget https://gitlab.com/libxc/libxc/-/archive/6.2.2/libxc-6.2.2.tar.gz && tar xf libxc-6.2.2.tar.gz && cd libxc-6.2.2
+autoreconf -i && ./configure CC=icx CXX=icpx FC=ifx --prefix=/usr/local
+make -j`nproc` && make check && make install
+cd .. && rm -rf libxc*
 
 # Add packages required to build via cmake
 # Disabled for GPU support. CUDA base image only supports Ubuntu up to 22.04, 

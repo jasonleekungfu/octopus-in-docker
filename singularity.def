@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: nvidia/cuda:12.4.1-devel-ubuntu22.04
+From: intel/hpckit:2024.1.0-devel-ubuntu22.04
 
 
 ################################################################################
@@ -16,8 +16,8 @@ Description     Octopus is a software package for density-functional theory (DFT
 ################################################################################
 
 # On octopus>13 libsym (external-lib) is dynamically linked from /usr/local/lib.
-# Also find CUDA toolkits and drivers.
-export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/cuda/lib64:/usr/local/cuda-12.4/compat/
+# Also find CUDA driver and toolkits.
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:/usr/local/cuda/lib64:/usr/lib/x86_64-linux-gnu/
 
 
 ################################################################################
@@ -46,11 +46,11 @@ WARNING: This recipe must be built in its current directory.
 export VERSION_OCTOPUS=14.0
 
 # On octopus>13 libsym (external-lib) is dynamically linked from /usr/local/lib.
-# Also find CUDA toolkits and drivers. 
-export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/cuda/lib64:/usr/local/cuda-12.4/compat/
+# Also find CUDA driver and toolkits.
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:/usr/local/cuda/lib64:/usr/lib/x86_64-linux-gnu/
 
 # Install octopus dependencies and compile octopus.
 cd /opt
 bash /opt/install_dependencies.sh && rm -rf /var/lib/apt/lists/*
-bash /opt/install_octopus.sh --version $VERSION_OCTOPUS --download_dir /opt/octopus --build_system autotools
+bash /opt/install_octopus.sh --version $VERSION_OCTOPUS
 rm /opt/*.sh
